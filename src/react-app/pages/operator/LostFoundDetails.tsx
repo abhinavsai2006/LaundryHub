@@ -1,0 +1,395 @@
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useData } from '@/react-app/contexts/DataContext';
+import { useAuth } from '@/react-app/contexts/AuthContext';
+import { ArrowLeft, Package, CheckCircle, XCircle, MessageSquare, Image, User, MapPin, AlertTriangle, FileText, Clock } from 'lucide-react';
+import GlassCard from '@/react-app/components/GlassCard';
+import { useToast } from '@/react-app/hooks/useToast';
+import { ToastContainer } from '@/react-app/components/Toast';
+import { LostItem } from '@/shared/laundry-types';
+
+export default function LostFoundDetails() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { lostItems, updateLostItem } = useData();
+  const { user } = useAuth();
+  const { toasts, showToast, removeToast } = useToast();
+  const [item, setItem] = useState<LostItem | null>(null);
+  const [noteText, setNoteText] = useState('');
+
+  useEffect(() => {
+    if (!id) {
+      navigate('/operator/lost-found');
+      return;
+    }
+
+    const foundItem = lostItems.find(item => item.id === id);
+    if (foundItem) {
+      setItem(foundItem);
+    } else {
+      showToast('Item not found', 'error');
+      navigate('/operator/lost-found');
+    }
+  }, [id, lostItems, navigate, showToast]);
+
+  const handleApproveItem = (itemId: string) => {
+    updateLostItem(itemId, {
+      status: 'approved',
+      foundBy: user?.id,
+      foundByName: user?.name,
+      foundAt: new Date().toISOString()
+    });
+    setItem(prev => prev ? { ...prev, status: 'approved', foundBy: user?.id, foundByName: user?.name, foundAt: new Date().toISOString() } : null);
+    showToast('Item approved and moved to found items', 'success');
+  };
+
+  const handleRejectItem = (itemId: string) => {
+    updateLostItem(itemId, { status: 'rejected' });
+    setItem(prev => prev ? { ...prev, status: 'rejected' } : null);
+    showToast('Item rejected', 'warning');
+  };
+
+  const handleMarkClaimed = (itemId: string) => {
+    updateLostItem(itemId, {
+      status: 'claimed',
+      claimedAt: new Date().toISOString(),
+      claimedBy: user?.id,
+      claimedByName: user?.name
+    });
+    setItem(prev => prev ? {
+      ...prev,
+      status: 'claimed',
+      claimedAt: new Date().toISOString(),
+      claimedBy: user?.id,
+      claimedByName: user?.name
+    } : null);
+    showToast('Item marked as claimed', 'success');
+  };
+
+  const handleReturnToOwner = (itemId: string) => {
+    updateLostItem(itemId, { status: 'returned' });
+    setItem(prev => prev ? { ...prev, status: 'returned' } : null);
+    showToast('Item marked as returned to owner', 'success');
+  };
+
+  const handleAddNote = (itemId: string) => {
+    if (!noteText.trim()) return;
+
+    const newNote = {
+      id: Date.now().toString(),
+      content: noteText.trim(),
+      createdBy: user?.name || 'Unknown',
+      createdAt: new Date().toISOString()
+    };
+
+    const existingNotes = item?.notes || [];
+    const updatedNotes = [...existingNotes, newNote];
+
+    updateLostItem(itemId, { notes: updatedNotes });
+    setItem(prev => prev ? { ...prev, notes: updatedNotes } : null);
+    setNoteText('');
+    showToast('Note added successfully', 'success');
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'reported': return 'bg-yellow-100 text-yellow-800';
+      case 'found': return 'bg-blue-100 text-blue-800';
+      case 'approved': return 'bg-green-100 text-green-800';
+      case 'claimed': return 'bg-purple-100 text-purple-800';
+      case 'returned': return 'bg-gray-100 text-gray-800';
+      case 'rejected': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getPriorityColor = (priority?: string) => {
+    switch (priority) {
+      case 'low': return 'bg-gray-100 text-gray-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'high': return 'bg-orange-100 text-orange-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  if (!item) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading item details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+      <ToastContainer toasts={toasts} onClose={removeToast} />
+
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <button
+            onClick={() => navigate('/operator/lost-found')}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Back to Lost & Found
+          </button>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Package className="w-8 h-8 text-orange-600" />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Item Details</h1>
+                <p className="text-gray-600">ID: {item.id}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(item.status)}`}>
+                {item.status}
+              </span>
+              {item.priority && (
+                <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(item.priority)}`}>
+                  {item.priority} priority
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left Column - Images and Basic Info */}
+          <div className="space-y-6">
+            {/* Images */}
+            {(item.photos && item.photos.length > 0) ? (
+              <GlassCard className="p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <Image className="w-5 h-5" />
+                  Images
+                </h2>
+                <div className="grid grid-cols-2 gap-3">
+                  {item.photos.map((photo: string, index: number) => (
+                    <img
+                      key={index}
+                      src={photo}
+                      alt={`Item photo ${index + 1}`}
+                      className="w-full h-32 object-cover rounded-lg border border-gray-200 cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => window.open(photo, '_blank')}
+                    />
+                  ))}
+                </div>
+              </GlassCard>
+            ) : item.photo ? (
+              <GlassCard className="p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <Image className="w-5 h-5" />
+                  Image
+                </h2>
+                <img
+                  src={item.photo}
+                  alt="Lost item"
+                  className="w-full h-64 object-cover rounded-lg border border-gray-200 cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => window.open(item.photo, '_blank')}
+                />
+              </GlassCard>
+            ) : null}
+
+            {/* Basic Information */}
+            <GlassCard className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Basic Information
+              </h2>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                  <span className="text-gray-600">Description</span>
+                  <span className="font-medium text-gray-900 text-right">{item.description}</span>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                  <span className="text-gray-600">Reported By</span>
+                  <span className="font-medium text-gray-900">{item.reportedByName}</span>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                  <span className="text-gray-600">Hostel</span>
+                  <span className="font-medium text-gray-900">{item.hostel}</span>
+                </div>
+                {item.location && (
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-gray-600 flex items-center gap-2">
+                      <MapPin className="w-4 h-4" />
+                      Location Found
+                    </span>
+                    <span className="font-medium text-gray-900">{item.location}</span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                  <span className="text-gray-600 flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    Reported At
+                  </span>
+                  <span className="font-medium text-gray-900">
+                    {new Date(item.createdAt).toLocaleDateString()} at {new Date(item.createdAt).toLocaleTimeString()}
+                  </span>
+                </div>
+                {item.foundAt && (
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Found At</span>
+                    <span className="font-medium text-gray-900">
+                      {new Date(item.foundAt).toLocaleDateString()} at {new Date(item.foundAt).toLocaleTimeString()}
+                    </span>
+                  </div>
+                )}
+                {item.claimedAt && (
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-gray-600">Claimed At</span>
+                    <span className="font-medium text-gray-900">
+                      {new Date(item.claimedAt).toLocaleDateString()} at {new Date(item.claimedAt).toLocaleTimeString()}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </GlassCard>
+
+            {/* Student Details */}
+            {item.studentDetails && (
+              <GlassCard className="p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <User className="w-5 h-5" />
+                  Student Details
+                </h2>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Name</span>
+                    <span className="font-medium text-gray-900">{item.studentDetails.name}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Student ID</span>
+                    <span className="font-medium text-gray-900">{item.studentDetails.studentId}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Room Number</span>
+                    <span className="font-medium text-gray-900">{item.studentDetails.roomNumber}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Contact</span>
+                    <span className="font-medium text-gray-900">{item.studentDetails.contactNumber}</span>
+                  </div>
+                  {item.studentDetails.email && (
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-gray-600">Email</span>
+                      <span className="font-medium text-gray-900">{item.studentDetails.email}</span>
+                    </div>
+                  )}
+                </div>
+              </GlassCard>
+            )}
+          </div>
+
+          {/* Right Column - Notes and Actions */}
+          <div className="space-y-6">
+            {/* Notes */}
+            {item.notes && item.notes.length > 0 && (
+              <GlassCard className="p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5" />
+                  Notes
+                </h2>
+                <div className="space-y-3">
+                  {item.notes.map((note: { id: string; content: string; createdBy: string; createdAt: string }, index: number) => (
+                    <div key={index} className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                      <p className="text-yellow-900 text-sm">{note.content}</p>
+                      <p className="text-yellow-600 text-xs mt-2">
+                        {note.createdBy} • {new Date(note.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </GlassCard>
+            )}
+
+            {/* Add Note */}
+            <GlassCard className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Add Note</h2>
+              <div className="space-y-3">
+                <textarea
+                  value={noteText}
+                  onChange={(e) => setNoteText(e.target.value)}
+                  placeholder="Add a note about this item..."
+                  rows={3}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                />
+                <button
+                  onClick={() => handleAddNote(item.id)}
+                  disabled={!noteText.trim()}
+                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Add Note
+                </button>
+              </div>
+            </GlassCard>
+
+            {/* Actions */}
+            <GlassCard className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5" />
+                Actions
+              </h2>
+              <div className="grid grid-cols-2 gap-3">
+                {item.status === 'reported' && (
+                  <>
+                    <button
+                      onClick={() => handleApproveItem(item.id)}
+                      className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleRejectItem(item.id)}
+                      className="flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+                    >
+                      <XCircle className="w-4 h-4" />
+                      Reject
+                    </button>
+                  </>
+                )}
+
+                {item.status === 'found' && (
+                  <>
+                    <button
+                      onClick={() => handleMarkClaimed(item.id)}
+                      className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      Mark Claimed
+                    </button>
+                    <button
+                      onClick={() => handleReturnToOwner(item.id)}
+                      className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                    >
+                      <Package className="w-4 h-4" />
+                      Returned
+                    </button>
+                  </>
+                )}
+
+                {item.status === 'claimed' && (
+                  <button
+                    onClick={() => handleReturnToOwner(item.id)}
+                    className="col-span-2 flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                  >
+                    <Package className="w-4 h-4" />
+                    Mark as Returned to Owner
+                  </button>
+                )}
+              </div>
+            </GlassCard>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
