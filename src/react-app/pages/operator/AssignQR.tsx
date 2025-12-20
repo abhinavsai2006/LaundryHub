@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router';
 import { useData } from '@/react-app/contexts/DataContext';
 import { useAuth } from '@/react-app/contexts/AuthContext';
 import { QrCode, Camera, AlertCircle } from 'lucide-react';
@@ -19,9 +19,17 @@ export default function AssignQR() {
     room: ''
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const { qrCodes, updateQRCode, addQRCode } = useData();
   const { user } = useAuth();
   const { toasts, showToast, removeToast } = useToast();
+
+  // Handle prefilled QR code from navigation state
+  useEffect(() => {
+    if (location.state?.prefilledCode) {
+      setScannedCode(location.state.prefilledCode);
+    }
+  }, [location.state]);
 
   const handleScan = (data: string) => {
     setScannedCode(data);

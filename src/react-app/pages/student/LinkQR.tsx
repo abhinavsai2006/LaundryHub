@@ -7,7 +7,7 @@ import GlassCard from '@/react-app/components/GlassCard';
 import { useToast } from '@/react-app/hooks/useToast';
 import { ToastContainer } from '@/react-app/components/Toast';
 
-export default function VerifyQR() {
+export default function LinkQR() {
   const navigate = useNavigate();
   const location = useLocation();
   const [scannedCode, setScannedCode] = useState('');
@@ -29,27 +29,67 @@ export default function VerifyQR() {
   }, [location.state, navigate, location.pathname]);
 
   const handleOpenScanner = () => {
-    navigate('/student/verify/camera', {
-      state: { returnPath: '/student/verify' }
+    navigate('/student/link-qr/camera', {
+      state: { returnPath: '/student/link-qr' }
     });
   };
 
   const processScannedCode = (code: string) => {
-    if (!myQRCode) {
-      setVerificationResult('error');
-      showToast('You do not have an assigned QR code', 'error');
+    // First check if QR is already assigned to this user
+    let qr = qrCodes.find(q => q.assignedTo === user?.id && q.code === code);
+    
+    if (qr) {
+      // Already assigned to this user
+      if (qr.status === 'verified') {
+        setVerificationResult('success');
+        showToast('Your QR code is already linked!', 'success');
+      } else {
+        updateQRCode(qr.id, { status: 'verified' });
+        setVerificationResult('success');
+        showToast('Your QR code is binded successfully!', 'success');
+      }
       return;
     }
 
-    if (code === myQRCode.code) {
-      updateQRCode(myQRCode.id, {
+    // Check if QR code exists and is assigned to someone else
+    qr = qrCodes.find(q => q.code === code);
+    
+    if (!qr) {
+      setVerificationResult('error');
+      showToast('QR code not found in system', 'error');
+      return;
+    }
+
+    if (qr.assignedTo && qr.assignedTo !== user?.id && !qr.assignedTo.startsWith('temp_')) {
+      setVerificationResult('error');
+      showToast('This QR code is already assigned to another student', 'error');
+      return;
+    }
+
+    // Check if this QR code was assigned to this student via pending assignments
+    const pendingAssignments = JSON.parse(localStorage.getItem('pendingAssignments') || '[]');
+    const matchingAssignment = pendingAssignments.find((assignment: any) => 
+      assignment.qrCode === code && 
+      assignment.studentDetails.rollNumber === user?.rollNumber
+    );
+
+    if (matchingAssignment) {
+      // Transfer QR code assignment to this user
+      updateQRCode(qr.id, {
+        assignedTo: user?.id,
+        assignedToName: user?.name,
         status: 'verified'
       });
+
+      // Remove from pending assignments
+      const updatedPending = pendingAssignments.filter((assignment: any) => assignment.qrCode !== code);
+      localStorage.setItem('pendingAssignments', JSON.stringify(updatedPending));
+
       setVerificationResult('success');
-      showToast('QR code verified successfully!', 'success');
+      showToast('Your QR code is binded successfully!', 'success');
     } else {
       setVerificationResult('error');
-      showToast('QR code does not match your assignment', 'error');
+      showToast('This QR code is not assigned to you', 'error');
     }
   };
 
@@ -68,17 +108,17 @@ export default function VerifyQR() {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
               <QrCode className="w-8 h-8 text-purple-600" />
-              Verify QR Code
+              Link QR Code
             </h1>
-            <p className="text-gray-600">Scan your assigned QR code to verify</p>
+            <p className="text-gray-600">Scan and link your assigned QR code</p>
           </div>
 
           {!myQRCode ? (
             <GlassCard className="p-8 text-center">
-              <AlertCircle className="w-16 h-16 text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No QR Code Assigned</h3>
+              <QrCode className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Link Your QR Code</h3>
               <p className="text-gray-600">
-                You don't have an assigned QR code yet. Please wait for an operator to assign one to you.
+                Scan the QR code that was assigned to you by an operator to link it to your account.
               </p>
             </GlassCard>
           ) : (

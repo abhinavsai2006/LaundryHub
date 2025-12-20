@@ -24,7 +24,7 @@ export default function ScanQR() {
   const [currentOrder, setCurrentOrder] = useState<LaundryItem | null>(null);
   const [selectedMachineId, setSelectedMachineId] = useState('');
   const [availableMachines, setAvailableMachines] = useState<Machine[]>([]);
-  const { laundryItems, updateLaundryItem, machines } = useData();
+  const { laundryItems, updateLaundryItem, machines, qrCodes } = useData();
   const { user } = useAuth();
   const { toasts, showToast, removeToast } = useToast();
 
@@ -58,19 +58,42 @@ export default function ScanQR() {
     // Find laundry item by QR code (bag QR or regular QR)
     const order = laundryItems.find(item => item.qrCode === code || item.bagQRCode === code);
 
-    if (!order) {
-      showToast('No laundry order found for this QR code', 'error');
-      setCurrentOrder(null);
+    if (order) {
+      // Validate QR is assigned and verified
+      // For demo purposes, we'll allow processing even if not verified
+      // In production, you'd check if the QR code status is 'verified'
+
+      setCurrentOrder(order);
+      setSelectedMachineId(''); // Reset machine selection
+      showToast('Laundry order found! Ready to update status.', 'success');
       return;
     }
 
-    // Validate QR is assigned and verified
-    // For demo purposes, we'll allow processing even if not verified
-    // In production, you'd check if the QR code status is 'verified'
+    // Check if QR code exists in the system but has no laundry order
+    const qrCode = qrCodes.find(qr => qr.code === code);
+    
+    if (qrCode) {
+      if (qrCode.status === 'available') {
+        showToast('This QR code is available but not assigned to a student. Would you like to assign it?', 'info');
+        // Could add a button to redirect to assign QR page
+        setTimeout(() => {
+          if (window.confirm('This QR code is not assigned to any student. Would you like to assign it now?')) {
+            navigate('/operator/assign-qr', { state: { prefilledCode: code } });
+          }
+        }, 500);
+      } else {
+        showToast('QR code found but no active laundry order. Check if order is completed.', 'warning');
+      }
+    } else {
+      showToast('QR code not found in system. Would you like to add it?', 'info');
+      setTimeout(() => {
+        if (window.confirm('This QR code is not in the system. Would you like to add and assign it?')) {
+          navigate('/operator/assign-qr', { state: { prefilledCode: code } });
+        }
+      }, 500);
+    }
 
-    setCurrentOrder(order);
-    setSelectedMachineId(''); // Reset machine selection
-    showToast('Laundry order found! Ready to update status.', 'success');
+    setCurrentOrder(null);
   };
 
   const handleManualScan = () => {
@@ -199,15 +222,6 @@ export default function ScanQR() {
                     className="w-full sm:flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                   >
                     Process QR Code
-                  </button>
-                  <button
-                    onClick={() => {
-                      localStorage.clear();
-                      window.location.reload();
-                    }}
-                    className="w-full sm:w-auto px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm"
-                  >
-                    Reset Data
                   </button>
                 </div>
               </div>

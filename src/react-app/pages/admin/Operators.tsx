@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { User } from '@/shared/laundry-types';
-import { Users, Search, Filter, Eye, CheckCircle, XCircle, UserCheck, UserX, Award, Clock, Activity } from 'lucide-react';
+import { Users, Search, Filter, Eye, CheckCircle, XCircle, UserCheck, UserX, Award, Clock, Activity, Home, UserPlus } from 'lucide-react';
 import GlassCard from '@/react-app/components/GlassCard';
 import { useData } from '@/react-app/contexts/DataContext';
 import { useToast } from '@/react-app/hooks/useToast';
@@ -142,6 +142,17 @@ export default function Operators() {
     const filteredUsers = usersData.filter((u: User) => u.id !== operatorId);
     localStorage.setItem('users', JSON.stringify(filteredUsers));
     showToast('Operator rejected and removed', 'success');
+  };
+
+  const handleReactivateOperator = (operatorId: string) => {
+    const updated = operators.map(op =>
+      op.id === operatorId
+        ? { ...op, status: 'active' as OperatorStatus, approvedAt: new Date().toISOString(), suspendedAt: undefined }
+        : op
+    );
+    setOperators(updated);
+    updateOperatorInStorage(updated.find(op => op.id === operatorId)!);
+    showToast('Operator reactivated successfully', 'success');
   };
 
   const handleSuspendOperator = (operatorId: string) => {
@@ -295,26 +306,44 @@ export default function Operators() {
                               <button
                                 onClick={() => handleApproveOperator(operator.id)}
                                 className="p-1 text-green-600 hover:text-green-800 hover:bg-green-100 rounded"
-                                title="Approve"
+                                title="Approve Operator"
                               >
                                 <CheckCircle className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => handleRejectOperator(operator.id)}
                                 className="p-1 text-red-600 hover:text-red-800 hover:bg-red-100 rounded"
-                                title="Reject"
+                                title="Reject Operator"
                               >
                                 <XCircle className="w-4 h-4" />
                               </button>
                             </>
                           )}
                           {operator.status === 'active' && (
+                            <>
+                              <button
+                                onClick={() => handleSuspendOperator(operator.id)}
+                                className="p-1 text-orange-600 hover:text-orange-800 hover:bg-orange-100 rounded"
+                                title="Suspend Operator"
+                              >
+                                <UserX className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => setSelectedOperator(operator)}
+                                className="p-1 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded"
+                                title="Assign Hostel"
+                              >
+                                <Home className="w-4 h-4" />
+                              </button>
+                            </>
+                          )}
+                          {operator.status === 'suspended' && (
                             <button
-                              onClick={() => handleSuspendOperator(operator.id)}
-                              className="p-1 text-orange-600 hover:text-orange-800 hover:bg-orange-100 rounded"
-                              title="Suspend"
+                              onClick={() => handleReactivateOperator(operator.id)}
+                              className="p-1 text-green-600 hover:text-green-800 hover:bg-green-100 rounded"
+                              title="Reactivate Operator"
                             >
-                              <UserX className="w-4 h-4" />
+                              <UserPlus className="w-4 h-4" />
                             </button>
                           )}
                           <button
@@ -339,7 +368,9 @@ export default function Operators() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">Operator Details & Scan Logs</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  {selectedOperator.status === 'active' ? 'Assign Hostel & View Details' : 'Operator Details & Scan Logs'}
+                </h2>
                 <button onClick={() => setSelectedOperator(null)} className="p-2 rounded hover:bg-gray-100">
                   ×
                 </button>
@@ -362,14 +393,15 @@ export default function Operators() {
                     </div>
                     {selectedOperator.status === 'active' && (
                       <div className="flex items-center gap-2">
+                        <Home className="w-5 h-5 text-blue-600" />
                         <select
                           value={selectedOperator.hostel || ''}
                           onChange={(e) => handleAssignHostel(selectedOperator.id, e.target.value)}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-medium"
                         >
                           <option value="">Unassigned</option>
-                          <option value="MH">MH</option>
-                          <option value="LH">LH</option>
+                          <option value="MH">MH Hostel</option>
+                          <option value="LH">LH Hostel</option>
                         </select>
                       </div>
                     )}

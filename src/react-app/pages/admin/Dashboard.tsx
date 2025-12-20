@@ -48,35 +48,40 @@ export default function AdminDashboard() {
       label: 'Total Laundry Bags Today',
       value: todaysOrders.length,
       color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50'
+      bgColor: 'bg-blue-50',
+      textColor: 'text-blue-600'
     },
     {
       icon: Clock,
       label: 'Pending',
       value: pendingOrders.length,
       color: 'from-yellow-500 to-yellow-600',
-      bgColor: 'bg-yellow-50'
+      bgColor: 'bg-yellow-50',
+      textColor: 'text-yellow-600'
     },
     {
       icon: Activity,
       label: 'In Progress',
       value: inProgressOrders.length,
       color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50'
+      bgColor: 'bg-purple-50',
+      textColor: 'text-purple-600'
     },
     {
       icon: CheckCircle,
       label: 'Ready for Collection',
       value: readyOrders.length,
       color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-50'
+      bgColor: 'bg-green-50',
+      textColor: 'text-green-600'
     },
     {
       icon: AlertTriangle,
       label: 'Delayed',
       value: delayedOrders.length,
       color: 'from-red-500 to-red-600',
-      bgColor: 'bg-red-50'
+      bgColor: 'bg-red-50',
+      textColor: 'text-red-600'
     }
   ];
 
@@ -118,7 +123,7 @@ export default function AdminDashboard() {
                   <p className="text-3xl font-bold text-gray-900">{card.value}</p>
                 </div>
                 <div className={`p-4 ${card.bgColor} rounded-xl`}>
-                  <card.icon className={`w-8 h-8 bg-gradient-to-br ${card.color} bg-clip-text text-transparent`} />
+                  <card.icon className={`w-8 h-8 ${card.textColor}`} />
                 </div>
               </div>
             </GlassCard>

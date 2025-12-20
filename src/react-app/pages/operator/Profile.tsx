@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/react-app/contexts/AuthContext';
 import { useData } from '@/react-app/contexts/DataContext';
-import { User, Mail, Phone, Award, TrendingUp, Save, Camera } from 'lucide-react';
+import { User, Mail, Phone, Save, Camera, IdCard, Building, Shield, Calendar } from 'lucide-react';
 import GlassCard from '@/react-app/components/GlassCard';
 import { useToast } from '@/react-app/hooks/useToast';
 import { ToastContainer } from '@/react-app/components/Toast';
@@ -22,7 +22,7 @@ export default function Profile() {
   const completedOrders = myAssignedOrders.filter(item => item.status === 'delivered');
   const activeOrders = myAssignedOrders.filter(item => item.status !== 'delivered');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -58,36 +58,6 @@ export default function Profile() {
             <p className="text-gray-600">Manage your profile and view performance</p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-6 mb-6">
-            <GlassCard className="p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <TrendingUp className="w-5 h-5 text-blue-600" />
-                <p className="text-sm text-gray-600">Active Orders</p>
-              </div>
-              <p className="text-3xl font-bold text-gray-900">{activeOrders.length}</p>
-            </GlassCard>
-
-            <GlassCard className="p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <Award className="w-5 h-5 text-green-600" />
-                <p className="text-sm text-gray-600">Completed</p>
-              </div>
-              <p className="text-3xl font-bold text-gray-900">{completedOrders.length}</p>
-            </GlassCard>
-
-            <GlassCard className="p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <Award className="w-5 h-5 text-purple-600" />
-                <p className="text-sm text-gray-600">Success Rate</p>
-              </div>
-              <p className="text-3xl font-bold text-gray-900">
-                {myAssignedOrders.length > 0 
-                  ? Math.round((completedOrders.length / myAssignedOrders.length) * 100)
-                  : 0}%
-              </p>
-            </GlassCard>
-          </div>
-
           <GlassCard className="p-6 mb-6">
             <div className="flex items-center gap-6 mb-6 pb-6 border-b border-gray-200">
               <div className="relative">
@@ -104,10 +74,20 @@ export default function Profile() {
                 <div className="mt-2 inline-flex px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium capitalize">
                   Operator
                 </div>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500">Profile Photo</p>
+                </div>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <User className="w-5 h-5 text-blue-600" />
+                  Operator Details
+                </h3>
+              </div>
+
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -122,6 +102,16 @@ export default function Profile() {
                       onChange={handleChange}
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Operator ID
+                  </label>
+                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <IdCard className="w-5 h-5 text-blue-600" />
+                    <span className="text-gray-900 font-medium">{user?.operatorId || 'OP-2024-001'}</span>
                   </div>
                 </div>
 
@@ -142,7 +132,7 @@ export default function Profile() {
                   </div>
                 </div>
 
-                <div className="md:col-span-2">
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Phone Number
                   </label>
@@ -156,6 +146,56 @@ export default function Profile() {
                       placeholder="+1 (555) 123-4567"
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Assigned Hostel
+                  </label>
+                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <Building className="w-5 h-5 text-green-600" />
+                    <span className="text-gray-900 font-medium">{user?.assignedHostel || 'MH-1'}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Account Status
+                  </label>
+                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <Shield className="w-5 h-5 text-purple-600" />
+                    <span className={`font-medium capitalize ${
+                      (user?.accountStatus || 'active') === 'active' ? 'text-green-700' :
+                      (user?.accountStatus || 'active') === 'suspended' ? 'text-red-700' :
+                      'text-yellow-700'
+                    }`}>
+                      {(user?.accountStatus || 'active') === 'pending_approval' ? 'Pending Approval' : (user?.accountStatus || 'active')}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Role
+                  </label>
+                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <Shield className="w-5 h-5 text-blue-600" />
+                    <span className="text-gray-900 font-medium">Laundry Operator</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Joining Date
+                  </label>
+                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <Calendar className="w-5 h-5 text-green-600" />
+                    <span className="text-gray-900 font-medium">
+                      {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                    </span>
                   </div>
                 </div>
               </div>

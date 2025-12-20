@@ -24,6 +24,9 @@ export function initializeSeedData(force = false) {
       password: 'operator123',
       role: 'operator',
       phone: '+1234567891',
+      operatorId: 'OP-2024-001',
+      assignedHostel: 'MH-1',
+      accountStatus: 'active',
       createdAt: new Date().toISOString()
     },
     {

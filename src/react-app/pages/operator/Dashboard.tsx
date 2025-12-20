@@ -1,6 +1,6 @@
 import { useData } from '@/react-app/contexts/DataContext';
 import { useAuth } from '@/react-app/contexts/AuthContext';
-import { Package, QrCode, AlertCircle, CheckCircle, Users, TrendingUp, Bell, Play, Square, Droplets, Zap, HelpCircle, Pause, RotateCcw, Flag, AlertTriangle, PenTool, RefreshCw } from 'lucide-react';
+import { Package, QrCode, AlertCircle, CheckCircle, Users, TrendingUp, Play, Square, Droplets, Zap, HelpCircle, Pause, RotateCcw, Flag, AlertTriangle, PenTool, RefreshCw } from 'lucide-react';
 import GlassCard from '@/react-app/components/GlassCard';
 import { Link } from 'react-router';
 import { useState, useMemo, useCallback } from 'react';
@@ -36,11 +36,6 @@ export default function OperatorDashboard() {
   // State declarations
   const [shiftActive, setShiftActive] = useState(false);
   const [shiftStartTime, setShiftStartTime] = useState<Date | null>(null);
-  const [alerts, setAlerts] = useState([
-    { id: 1, type: 'warning', message: 'Machine W-01 needs maintenance', priority: 'high' },
-    { id: 2, type: 'info', message: '3 bags ready for delivery', priority: 'medium' },
-    { id: 3, type: 'urgent', message: 'Overload warning: 5 pending pickups', priority: 'high' }
-  ]);
   const [waterIssue, setWaterIssue] = useState(false);
   const [powerIssue, setPowerIssue] = useState(false);
   const [workloadLevel] = useState(65); // percentage
@@ -62,10 +57,6 @@ export default function OperatorDashboard() {
       setShiftStartTime(null);
     }
   }, [shiftActive]);
-
-  const acknowledgeAlert = useCallback((alertId: number) => {
-    setAlerts(alerts.filter(alert => alert.id !== alertId));
-  }, [alerts]);
 
   const getShiftDuration = useCallback(() => {
     if (!shiftStartTime) return '0h 0m';
@@ -229,42 +220,17 @@ export default function OperatorDashboard() {
                   <p className="text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</p>
                 </div>
                 <div className={`p-2 md:p-4 ${stat.bgColor} rounded-xl flex-shrink-0`}>
-                  <stat.icon className={`w-6 h-6 md:w-8 md:h-8 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`} style={{ WebkitTextFillColor: 'transparent' }} />
+                  <stat.icon className={`w-6 h-6 md:w-8 md:h-8 ${
+                    stat.color === 'from-blue-500 to-blue-600' ? 'text-blue-600' :
+                    stat.color === 'from-orange-500 to-orange-600' ? 'text-orange-600' :
+                    stat.color === 'from-purple-500 to-purple-600' ? 'text-purple-600' :
+                    'text-green-600'
+                  }`} />
                 </div>
               </div>
             </GlassCard>
           ))}
         </div>
-
-        {/* Alerts Section */}
-        {alerts.length > 0 && (
-          <GlassCard className="p-4 md:p-6 mb-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Bell className="w-5 h-5 text-orange-600" />
-              <h2 className="text-lg md:text-xl font-bold text-gray-900">Active Alerts</h2>
-            </div>
-            <div className="space-y-3">
-              {alerts.map(alert => (
-                <div key={alert.id} className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border-l-4 gap-2 ${
-                  alert.priority === 'high' ? 'border-red-500 bg-red-50' :
-                  alert.priority === 'medium' ? 'border-yellow-500 bg-yellow-50' :
-                  'border-blue-500 bg-blue-50'
-                }`}>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">{alert.message}</p>
-                    <p className="text-xs text-gray-600 capitalize">{alert.priority} priority</p>
-                  </div>
-                  <button
-                    onClick={() => acknowledgeAlert(alert.id)}
-                    className="px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded hover:bg-gray-50 text-sm min-h-[36px] w-full sm:w-auto"
-                  >
-                    Acknowledge
-                  </button>
-                </div>
-              ))}
-            </div>
-          </GlassCard>
-        )}
 
         {/* Performance Section */}
         <GlassCard className="p-4 md:p-6 mb-6">

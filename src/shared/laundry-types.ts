@@ -14,6 +14,10 @@ export interface User {
   profilePhoto?: string;
   qrCode?: string;
   createdAt: string;
+  // Operator specific fields
+  operatorId?: string;
+  assignedHostel?: string;
+  accountStatus?: 'active' | 'suspended' | 'pending_approval';
   // New student features
   laundryPreferences?: LaundryPreferences;
   laundryPaused?: boolean;

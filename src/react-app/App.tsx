@@ -47,7 +47,7 @@ import TicketResponsePage from '@/react-app/pages/operator/TicketResponsePage';
 
 import StudentDashboard from '@/react-app/pages/student/Dashboard';
 import SubmitLaundry from '@/react-app/pages/student/SubmitLaundry';
-import VerifyQR from '@/react-app/pages/student/VerifyQR';
+import LinkQR from '@/react-app/pages/student/LinkQR';
 import History from '@/react-app/pages/student/History';
 import OrderDetails from '@/react-app/pages/student/OrderDetails';
 import HelpSupport from '@/react-app/pages/student/HelpSupport';
@@ -435,10 +435,10 @@ function AppContent() {
           }
         />
         <Route
-          path="/student/verify"
+          path="/student/link-qr"
           element={
             <ProtectedRoute allowedRoles={['student']}>
-              <VerifyQR />
+              <LinkQR />
             </ProtectedRoute>
           }
         />
@@ -509,7 +509,7 @@ function AppContent() {
           }
         />
         <Route
-          path="/student/verify/camera"
+          path="/student/link-qr/camera"
           element={
             <ProtectedRoute allowedRoles={['student']}>
               <CameraScannerPage />

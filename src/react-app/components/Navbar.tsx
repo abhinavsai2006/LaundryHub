@@ -1,19 +1,17 @@
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '@/react-app/contexts/AuthContext';
-import { LogOut, Menu, X, Shirt } from 'lucide-react';
+import { LogOut, Menu, X, Shirt, Home, BarChart3, Users, QrCode, Cog, Search, Megaphone, FileText, Bell, Shield, Clock, BookOpen, AlertTriangle, Settings, Package, History, User, Tag, Receipt, PenTool } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import NotificationBell from './NotificationBell';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
-    setMobileMenuOpen(false);
   };
 
   const getNavLinks = () => {
@@ -22,44 +20,45 @@ export default function Navbar() {
     switch (user.role) {
       case 'admin':
         return [
-          { to: '/admin', label: 'Dashboard' },
-          { to: '/admin/analytics', label: 'Analytics' },
-          { to: '/admin/operators', label: 'Operators' },
-          { to: '/admin/students', label: 'Students' },
-          { to: '/admin/qr-codes', label: 'QR Codes' },
-          { to: '/admin/machines', label: 'Machines' },
-          { to: '/admin/lost-found', label: 'Lost & Found' },
-          { to: '/admin/announcements', label: 'Announcements' },
-          { to: '/admin/reports', label: 'Reports' },
-          { to: '/admin/alerts', label: 'Alerts' },
-          { to: '/admin/roles', label: 'Roles' },
-          { to: '/admin/time-slots', label: 'Time Slots' },
-          { to: '/admin/rules', label: 'Rules' },
-          { to: '/admin/incidents', label: 'Incidents' },
-          { to: '/admin/settings', label: 'Settings' }
+          { to: '/admin', label: 'Dashboard', icon: Home },
+          { to: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
+          { to: '/admin/operators', label: 'Operators', icon: Users },
+          { to: '/admin/students', label: 'Students', icon: Users },
+          { to: '/admin/qr-codes', label: 'QR Codes', icon: QrCode },
+          { to: '/admin/machines', label: 'Machines', icon: Cog },
+          { to: '/admin/lost-found', label: 'Lost & Found', icon: Search },
+          { to: '/admin/announcements', label: 'Announcements', icon: Megaphone },
+          { to: '/admin/reports', label: 'Reports', icon: FileText },
+          { to: '/admin/alerts', label: 'Alerts', icon: Bell },
+          { to: '/admin/roles', label: 'Roles', icon: Shield },
+          { to: '/admin/time-slots', label: 'Time Slots', icon: Clock },
+          { to: '/admin/rules', label: 'Rules', icon: BookOpen },
+          { to: '/admin/incidents', label: 'Incidents', icon: AlertTriangle },
+          { to: '/admin/settings', label: 'Settings', icon: Settings }
         ];
       case 'operator':
         return [
-          { to: '/operator', label: 'Dashboard' },
-          { to: '/operator/scan', label: 'Scan QR' },
-          { to: '/operator/orders', label: 'Orders' },
-          { to: '/operator/machines', label: 'Machines' },
-          { to: '/operator/lost-found', label: 'Lost & Found' },
-          { to: '/operator/help', label: 'Help & Support' },
-          { to: '/operator/anomaly-reporting', label: 'Anomaly Reporting' },
-          { to: '/operator/digital-signature', label: 'Digital Signature' },
-          { to: '/operator/bag-label-replacement', label: 'Bag Labels' },
-          { to: '/operator/manual-receipt', label: 'Receipts' },
-          { to: '/operator/profile', label: 'Profile' }
+          { to: '/operator', label: 'Dashboard', icon: Home },
+          { to: '/operator/scan', label: 'Scan QR', icon: QrCode },
+          { to: '/operator/orders', label: 'Orders', icon: Package },
+          { to: '/operator/machines', label: 'Machines', icon: Cog },
+          { to: '/operator/lost-found', label: 'Lost & Found', icon: Search },
+          { to: '/operator/help', label: 'Help & Support', icon: Settings },
+          { to: '/operator/anomaly-reporting', label: 'Anomaly Reporting', icon: AlertTriangle },
+          { to: '/operator/digital-signature', label: 'Digital Signature', icon: PenTool },
+          { to: '/operator/bag-label-replacement', label: 'Bag Labels', icon: Tag },
+          { to: '/operator/manual-receipt', label: 'Receipts', icon: Receipt },
+          { to: '/operator/profile', label: 'Profile', icon: User }
         ];
       case 'student':
         return [
-          { to: '/student', label: 'Dashboard' },
-          { to: '/student/submit', label: 'Submit Laundry' },
-          { to: '/student/history', label: 'History' },
-          { to: '/student/help', label: 'Help & Support' },
-          { to: '/student/settings', label: 'Settings' },
-          { to: '/student/profile', label: 'Profile' }
+          { to: '/student', label: 'Dashboard', icon: Home },
+          { to: '/student/link-qr', label: 'Link QR Code', icon: QrCode },
+          { to: '/student/submit', label: 'Submit Laundry', icon: Package },
+          { to: '/student/history', label: 'History', icon: History },
+          { to: '/student/help', label: 'Help & Support', icon: Settings },
+          { to: '/student/settings', label: 'Settings', icon: Cog },
+          { to: '/student/profile', label: 'Profile', icon: User }
         ];
       default:
         return [];
@@ -106,12 +105,12 @@ export default function Navbar() {
 
                 {moreLinks.length > 0 && (
                   <button
-                    onClick={() => setSideMenuOpen(true)}
-                    className="flex items-center gap-2 px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+                    onClick={() => setSideMenuOpen(!sideMenuOpen)}
+                    className="hidden md:flex items-center gap-2 px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all"
                     aria-label="More sections"
                   >
                     <Menu className="w-4 h-4" />
-                    <span className="hidden lg:inline">More</span>
+                    <span>More</span>
                   </button>
                 )}
               </div>
@@ -130,71 +129,54 @@ export default function Navbar() {
                   <span>Logout</span>
                 </button>
                 <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-all"
+                  onClick={() => setSideMenuOpen(!sideMenuOpen)}
+                  className="lg:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-all"
+                  aria-label="Toggle navigation menu"
                 >
-                  {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                  {sideMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
               </div>
             </>
           )}
         </div>
 
-        {mobileMenuOpen && user && (
-          <div className="md:hidden py-4 space-y-2 border-t border-white/10">
-            {navLinks.map(link => (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all"
-              >
-                {link.label}
-              </Link>
-            ))}
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-2 px-4 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all"
-            >
-              <LogOut className="w-4 h-4" />
-              <span>Logout</span>
-            </button>
-          </div>
-        )}
-
-        {/* Desktop sidebar for extra links */}
+        {/* Sidebar navigation */}
         <>
           <div
-            className={`fixed inset-0 bg-black/30 z-40 transition-opacity duration-200 ${
+            className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
               sideMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
             onClick={() => setSideMenuOpen(false)}
           />
 
           <aside
-            className={`fixed left-0 top-0 h-full w-72 bg-white shadow-xl z-50 p-4 transform transition-transform duration-300 ease-out ${
+            className={`fixed left-0 top-0 h-full w-72 bg-white shadow-xl z-50 p-4 transform transition-transform duration-300 ease-out overflow-hidden flex flex-col ${
               sideMenuOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
             aria-hidden={!sideMenuOpen}
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="font-semibold">More Sections</div>
+              <div className="font-semibold">Navigation</div>
               <button onClick={() => setSideMenuOpen(false)} className="p-2 text-gray-600 hover:bg-gray-100 rounded">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <nav className="flex flex-col gap-2">
-              {moreLinks.map(link => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setSideMenuOpen(false)}
-                  className="block px-3 py-2 rounded hover:bg-gray-50 text-gray-700"
-                >
-                  {link.label}
-                </Link>
-              ))}
+            <nav className="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-200px)]">
+              {navLinks.map(link => {
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setSideMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50 text-gray-700 whitespace-nowrap"
+                  >
+                    <Icon className="w-4 h-4 flex-shrink-0" />
+                    {link.label}
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="mt-6 border-t pt-4">

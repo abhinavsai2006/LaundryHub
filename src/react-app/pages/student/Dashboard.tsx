@@ -1,10 +1,10 @@
 import { useData } from '@/react-app/contexts/DataContext';
 import { useAuth } from '@/react-app/contexts/AuthContext';
-import { Package, QrCode, Clock, CheckCircle, Sparkles, TrendingUp, Bell, MessageCircle, Search, AlertTriangle, Timer, Receipt, Settings, Zap, Pause, Eye, Users } from 'lucide-react';
+import { Package, QrCode, Clock, CheckCircle, Sparkles, TrendingUp, Bell, MessageCircle, Search, AlertTriangle, Receipt, Settings, Zap, Pause, Users } from 'lucide-react';
 import GlassCard from '@/react-app/components/GlassCard';
 import { Link } from 'react-router';
 import { useState, useEffect, useMemo } from 'react';
-import { NextActionGuidance, LaundryInsights, LaundryItem, Announcement } from '@/shared/laundry-types';
+import { NextActionGuidance, LaundryInsights, Announcement } from '@/shared/laundry-types';
 
 const statusSteps = [
   { key: 'submitted', label: 'Submitted', icon: Package },
@@ -30,8 +30,6 @@ export default function StudentDashboard() {
 
   // New student features state
   const [nextAction, setNextAction] = useState<NextActionGuidance | null>(null);
-  const [pickupTimer, setPickupTimer] = useState<string>('');
-  const [missedPickups, setMissedPickups] = useState<LaundryItem[]>([]);
   const [laundryInsights, setLaundryInsights] = useState<LaundryInsights | null>(null);
 
   // Calculate next action guidance
@@ -42,24 +40,11 @@ export default function StudentDashboard() {
 
     if (!myQRCode || myQRCode.status !== 'verified') {
       action = {
-        action: 'Verify QR Code',
-        description: 'Verify your QR code assignment to start submitting laundry',
+        action: 'Link QR Code',
+        description: 'Link your assigned QR code to start submitting laundry',
         priority: 'high' as const,
         icon: 'QrCode',
-        actionUrl: '/student/verify'
-      };
-    } else if (readyOrders.length > 0) {
-      const readyOrder = readyOrders[0];
-      const readyTime = new Date(readyOrder.readyAt || readyOrder.estimatedReadyTime || '');
-      const now = new Date();
-      const hoursLeft = Math.max(0, Math.floor((readyTime.getTime() - now.getTime()) / (1000 * 60 * 60)));
-
-      action = {
-        action: 'Pickup Ready',
-        description: `Your laundry is ready for pickup${hoursLeft > 0 ? ` (${hoursLeft}h remaining)` : ' - pickup now!'}`,
-        priority: hoursLeft < 2 ? 'high' as const : 'medium' as const,
-        icon: 'Bell',
-        actionUrl: '/student/history'
+        actionUrl: '/student/link-qr'
       };
     } else if (activeOrders.length === 0) {
       action = {
@@ -69,42 +54,10 @@ export default function StudentDashboard() {
         icon: 'Package',
         actionUrl: '/student/submit'
       };
-    } else {
-      action = {
-        action: 'Track Progress',
-        description: 'Monitor your laundry status and estimated completion time',
-        priority: 'low' as const,
-        icon: 'Clock',
-        actionUrl: '#current-status'
-      };
     }
 
     setNextAction(action);
   }, [user, myQRCode, readyOrders, activeOrders]);
-
-  // Calculate pickup timer for ready orders
-  useEffect(() => {
-    if (readyOrders.length === 0) {
-      setPickupTimer('');
-      return;
-    }
-
-    const readyOrder = readyOrders[0];
-    const readyTime = new Date(readyOrder.readyAt || readyOrder.estimatedReadyTime || '');
-    const deadline = new Date(readyTime.getTime() + (24 * 60 * 60 * 1000)); // 24 hours deadline
-    const now = new Date();
-
-    if (now > deadline) {
-      setPickupTimer('Pickup overdue!');
-      return;
-    }
-
-    const timeLeft = deadline.getTime() - now.getTime();
-    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-
-    setPickupTimer(`${hours}h ${minutes}m remaining`);
-  }, [readyOrders]);
 
   // Calculate laundry insights
   useEffect(() => {
@@ -131,14 +84,6 @@ export default function StudentDashboard() {
       averageItems: monthlyLaundry.length > 0 ?
         Math.round(monthlyLaundry.reduce((sum, item) => sum + item.items.length, 0) / monthlyLaundry.length) : 0
     });
-  }, [myLaundry]);
-
-  // Get missed pickups
-  useEffect(() => {
-    const missed = myLaundry.filter(item =>
-      item.missedPickup && item.missedPickup.status === 'pending'
-    );
-    setMissedPickups(missed);
   }, [myLaundry]);
 
   const getStatusIcon = (status: string) => {
@@ -262,59 +207,6 @@ export default function StudentDashboard() {
                 )}
               </div>
             </div>
-          </GlassCard>
-        )}
-
-        {/* Pickup Reminder & Missed Pickup Tracking */}
-        {(readyOrders.length > 0 || missedPickups.length > 0) && (
-          <GlassCard className="p-6 mb-6 bg-gradient-to-r from-orange-50 to-red-50 border-orange-200">
-            <div className="flex items-center gap-3 mb-4">
-              <Timer className="w-6 h-6 text-orange-600" />
-              <h2 className="text-xl font-bold text-gray-900">Pickup Reminders</h2>
-            </div>
-
-            {readyOrders.length > 0 && (
-              <div className="mb-4 p-4 bg-white/60 rounded-xl border border-orange-200">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-semibold text-gray-900">Laundry Ready for Pickup</h3>
-                  <span className={`px-3 py-1 rounded-lg text-sm font-medium ${
-                    pickupTimer.includes('overdue') ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'
-                  }`}>
-                    {pickupTimer}
-                  </span>
-                </div>
-                <p className="text-gray-600 text-sm mb-3">
-                  Order #{readyOrders[0].id.slice(-8)} • {readyOrders[0].items.length} items
-                </p>
-                <Link
-                  to="/student/history"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm font-medium"
-                >
-                  View Details
-                  <Eye className="w-4 h-4" />
-                </Link>
-              </div>
-            )}
-
-            {missedPickups.length > 0 && (
-              <div className="p-4 bg-red-50 rounded-xl border border-red-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle className="w-5 h-5 text-red-600" />
-                  <h3 className="font-semibold text-red-900">Missed Pickup Alert</h3>
-                </div>
-                <p className="text-red-800 text-sm mb-3">
-                  You have {missedPickups.length} missed pickup{missedPickups.length > 1 ? 's' : ''}.
-                  Please collect your laundry as soon as possible.
-                </p>
-                <Link
-                  to="/student/history"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
-                >
-                  View Missed Pickups
-                  <Clock className="w-4 h-4" />
-                </Link>
-              </div>
-            )}
           </GlassCard>
         )}
 
@@ -508,12 +400,12 @@ export default function StudentDashboard() {
               )}
               {myQRCode && (
                 <Link
-                  to="/student/verify"
+                  to="/student/link-qr"
                   className="flex items-center gap-3 p-4 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg"
                 >
                   <QrCode className="w-6 h-6" />
                   <div>
-                    <p className="font-semibold">Verify QR</p>
+                    <p className="font-semibold">Link QR</p>
                     <p className="text-sm text-purple-100">Confirm assignment</p>
                   </div>
                 </Link>

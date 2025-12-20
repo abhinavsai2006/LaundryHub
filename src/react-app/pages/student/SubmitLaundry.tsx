@@ -8,18 +8,36 @@ import CameraScanner from '@/react-app/components/CameraScanner';
 import { useToast } from '@/react-app/hooks/useToast';
 import { ToastContainer } from '@/react-app/components/Toast';
 
-const clothesTypes = [
+const clothesCategories = [
+  { id: 'shirts', name: 'Shirts/T-Shirts', icon: '👕' },
+  { id: 'pants', name: 'Pants/Trousers', icon: '👖' },
+  { id: 'shorts', name: 'Shorts', icon: '🩳' },
+  { id: 'dresses', name: 'Dresses/Skirts', icon: '👗' },
+  { id: 'jackets', name: 'Jackets/Coats', icon: '🧥' },
+  { id: 'underwear', name: 'Underwear/Socks', icon: '🧦' },
+  { id: 'bedding', name: 'Bedding/Towels', icon: '🛏️' },
+  { id: 'other', name: 'Other Items', icon: '👚' }
+];
+
+const fabricTypes = [
   'Cotton',
+  'Polyester',
   'Wool',
   'Silk',
-  'Synthetic',
   'Denim',
-  'Linen'
+  'Linen',
+  'Nylon',
+  'Rayon',
+  'Spandex',
+  'Mixed'
 ];
 
 export default function SubmitLaundry() {
-  const [clothesCount, setClothesCount] = useState('');
-  const [clothesType, setClothesType] = useState('');
+  const [laundryItems, setLaundryItems] = useState<Array<{
+    category: string;
+    count: number;
+    fabricType: string;
+  }>>([]);
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [bagPhoto, setBagPhoto] = useState('');
   const [qrCode, setQrCode] = useState('');
@@ -31,6 +49,20 @@ export default function SubmitLaundry() {
   const { toasts, showToast, removeToast } = useToast();
 
   const myQRCode = qrCodes.find(qr => qr.assignedTo === user?.id && qr.status === 'verified');
+
+  const addClothingItem = (category: string, count: number, fabricType: string) => {
+    if (count > 0) {
+      setLaundryItems(prev => [...prev, { category, count, fabricType }]);
+    }
+  };
+
+  const removeLaundryItem = (index: number) => {
+    setLaundryItems(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const getTotalItems = () => {
+    return laundryItems.reduce((total, item) => total + item.count, 0);
+  };
 
   const handleQRScan = (data: string) => {
     if (myQRCode && data === myQRCode.code) {
@@ -62,16 +94,20 @@ export default function SubmitLaundry() {
       return;
     }
 
-    if (!clothesCount || !clothesType) {
-      showToast('Please fill in all required fields', 'error');
+    if (laundryItems.length === 0) {
+      showToast('Please add at least one clothing item', 'error');
       return;
     }
+
+    const itemsDescription = laundryItems.map(item => 
+      `${item.count} ${item.category} (${item.fabricType})`
+    );
 
     addLaundryItem({
       studentId: user?.id || '',
       studentName: user?.name || 'Unknown',
       qrCode: qrCode,
-      items: [`${clothesCount} ${clothesType} items`],
+      items: itemsDescription,
       specialInstructions: specialInstructions || undefined,
       status: 'submitted'
     });
@@ -168,40 +204,127 @@ export default function SubmitLaundry() {
                     <Shirt className="w-5 h-5 text-blue-600" />
                     Laundry Details
                   </h3>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Clothes Count *
-                      </label>
-                      <input
-                        type="number"
-                        value={clothesCount}
-                        onChange={(e) => setClothesCount(e.target.value)}
-                        min="1"
-                        required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="e.g., 5"
-                      />
-                    </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Clothes Type *
-                      </label>
-                      <select
-                        value={clothesType}
-                        onChange={(e) => setClothesType(e.target.value)}
-                        required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      >
-                        <option value="">Select type</option>
-                        {clothesTypes.map(type => (
-                          <option key={type} value={type}>{type}</option>
-                        ))}
-                      </select>
+                  {/* Add New Item Form */}
+                  <div className="bg-gray-50 rounded-xl p-4 mb-6">
+                    <h4 className="font-medium text-gray-900 mb-3">Add Clothing Items</h4>
+                    <div className="grid md:grid-cols-3 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                          Category
+                        </label>
+                        <select
+                          id="new-category"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        >
+                          <option value="">Select category</option>
+                          {clothesCategories.map(cat => (
+                            <option key={cat.id} value={cat.id}>
+                              {cat.icon} {cat.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                          Count
+                        </label>
+                        <input
+                          id="new-count"
+                          type="number"
+                          min="1"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                          placeholder="0"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                          Fabric Type
+                        </label>
+                        <select
+                          id="new-fabric"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        >
+                          <option value="">Select fabric</option>
+                          {fabricTypes.map(fabric => (
+                            <option key={fabric} value={fabric}>{fabric}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const categorySelect = document.getElementById('new-category') as HTMLSelectElement;
+                        const countInput = document.getElementById('new-count') as HTMLInputElement;
+                        const fabricSelect = document.getElementById('new-fabric') as HTMLSelectElement;
+                        
+                        const category = categorySelect.value;
+                        const count = parseInt(countInput.value) || 0;
+                        const fabricType = fabricSelect.value;
+                        
+                        if (!category || count <= 0 || !fabricType) {
+                          showToast('Please fill all fields for the new item', 'error');
+                          return;
+                        }
+                        
+                        const categoryName = clothesCategories.find(c => c.id === category)?.name || category;
+                        addClothingItem(categoryName, count, fabricType);
+                        
+                        // Reset form
+                        categorySelect.value = '';
+                        countInput.value = '';
+                        fabricSelect.value = '';
+                      }}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                    >
+                      Add Item
+                    </button>
                   </div>
+
+                  {/* Items List */}
+                  {laundryItems.length > 0 && (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium text-gray-900">Your Laundry Items</h4>
+                        <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                          Total: {getTotalItems()} items
+                        </span>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        {laundryItems.map((item, index) => (
+                          <div key={index} className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-3">
+                            <div className="flex items-center gap-3">
+                              <span className="text-lg">
+                                {clothesCategories.find(c => c.name === item.category)?.icon || '👚'}
+                              </span>
+                              <div>
+                                <p className="font-medium text-gray-900">
+                                  {item.count} × {item.category}
+                                </p>
+                                <p className="text-sm text-gray-600">{item.fabricType}</p>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeLaundryItem(index)}
+                              className="text-red-500 hover:text-red-700 transition-colors"
+                            >
+                              <X className="w-5 h-5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {laundryItems.length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      <Shirt className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                      <p>No items added yet. Add your first clothing item above.</p>
+                    </div>
+                  )}
                 </GlassCard>
 
                 {/* Special Instructions */}
