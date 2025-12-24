@@ -114,12 +114,41 @@ export default function LinkQR() {
           </div>
 
           {!myQRCode ? (
-            <GlassCard className="p-8 text-center">
-              <QrCode className="w-16 h-16 text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Link Your QR Code</h3>
-              <p className="text-gray-600">
-                Scan the QR code that was assigned to you by an operator to link it to your account.
-              </p>
+            <GlassCard className="p-8">
+              <div className="text-center mb-6">
+                <QrCode className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Link Your QR Code</h3>
+                <p className="text-gray-600 mb-6">
+                  Scan the QR code that was assigned to you by an operator to link it to your account.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={scannedCode}
+                    onChange={(e) => setScannedCode(e.target.value)}
+                    placeholder="Enter or scan QR code"
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                  <button
+                    onClick={handleOpenScanner}
+                    className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg"
+                  >
+                    <Camera className="w-5 h-5" />
+                    <span className="hidden sm:inline">Scan</span>
+                  </button>
+                </div>
+
+                <button
+                  onClick={handleManualVerify}
+                  disabled={!scannedCode.trim()}
+                  className="w-full px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                >
+                  Link QR Code
+                </button>
+              </div>
             </GlassCard>
           ) : (
             <>

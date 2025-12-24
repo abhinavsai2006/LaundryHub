@@ -150,7 +150,7 @@ export default function Navbar() {
           />
 
           <aside
-            className={`fixed left-0 top-0 h-full w-72 bg-white shadow-xl z-50 p-4 transform transition-transform duration-300 ease-out overflow-hidden flex flex-col ${
+            className={`fixed left-0 top-0 h-full w-72 bg-white shadow-xl z-50 p-4 transform transition-transform duration-300 ease-out flex flex-col md:pb-0 pb-24 ${
               sideMenuOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
             aria-hidden={!sideMenuOpen}
@@ -162,31 +162,33 @@ export default function Navbar() {
               </button>
             </div>
 
-            <nav className="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-200px)]">
-              {navLinks.map(link => {
-                const Icon = link.icon;
-                return (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    onClick={() => setSideMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50 text-gray-700 whitespace-nowrap"
-                  >
-                    <Icon className="w-4 h-4 flex-shrink-0" />
-                    {link.label}
-                  </Link>
-                );
-              })}
-            </nav>
+            <div className="flex-1 flex flex-col min-h-0">
+              <nav className="flex flex-col gap-2 overflow-y-auto">
+                {navLinks.map(link => {
+                  const Icon = link.icon;
+                  return (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      onClick={() => setSideMenuOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50 text-gray-700 whitespace-nowrap"
+                    >
+                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </nav>
 
-            <div className="mt-6 border-t pt-4">
-              <button
-                onClick={handleLogout}
-                className="w-full flex items-center gap-2 px-4 py-2 text-sm bg-red-50 text-red-700 rounded"
-              >
-                <LogOut className="w-4 h-4" />
-                Logout
-              </button>
+              <div className="mt-6 border-t pt-4 flex-shrink-0">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-sm transition-all duration-200 font-medium"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
             </div>
           </aside>
         </>

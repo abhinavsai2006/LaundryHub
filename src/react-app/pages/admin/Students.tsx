@@ -104,28 +104,28 @@ export default function Students() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-            <GraduationCap className="w-8 h-8 text-blue-600" />
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+            <GraduationCap className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
             Student Management
           </h1>
-          <p className="text-gray-600">Monitor student participation</p>
+          <p className="text-sm sm:text-base text-gray-600">Monitor student participation</p>
         </div>
 
         {/* Filters */}
-        <GlassCard className="p-6 mb-6">
-          <div className="flex items-center gap-4 mb-4">
-            <Filter className="w-5 h-5 text-gray-600" />
-            <span className="font-medium text-gray-900">Filters</span>
+        <GlassCard className="p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+            <span className="font-medium text-gray-900 text-sm sm:text-base">Filters</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Hostel</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Hostel</label>
               <select
                 value={hostelFilter}
                 onChange={(e) => setHostelFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
               >
                 <option value="all">All Hostels</option>
                 <option value="MH">MH</option>
@@ -133,22 +133,22 @@ export default function Students() {
               </select>
             </div>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search students..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
               />
             </div>
-            <div className="flex items-center">
-              <label className="flex items-center">
+            <div className="flex items-center sm:col-span-2 lg:col-span-1">
+              <label className="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={showMasked}
                   onChange={(e) => setShowMasked(e.target.checked)}
-                  className="mr-2"
+                  className="mr-2 sm:mr-3 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <span className="text-sm text-gray-700">Mask sensitive data</span>
               </label>
@@ -156,71 +156,73 @@ export default function Students() {
           </div>
         </GlassCard>
 
-        {/* Students Table */}
-        <GlassCard className="p-6">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 font-medium text-gray-900">Reg No</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900">Name</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900">Hostel & Room</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900">QR Status</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900">Laundry Frequency</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900">Flags</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-900">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredStudents.map(student => {
-                  const frequency = getLaundryFrequency(student.id);
-                  const suspiciousPatterns = detectSuspiciousPatterns(student.id);
-                  return (
-                    <tr key={student.id} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-3 px-4 text-gray-900">{maskRollNumber(student.rollNumber)}</td>
-                      <td className="py-3 px-4 text-gray-900">{maskName(student.name)}</td>
-                      <td className="py-3 px-4 text-gray-900">{student.hostel} {student.room}</td>
-                      <td className="py-3 px-4">
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                          getQRStatus(student) === 'Verified' ? 'bg-green-100 text-green-800' :
-                          getQRStatus(student) === 'Assigned' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {getQRStatus(student)}
+        {/* Students List */}
+        <div className="space-y-3 sm:space-y-4">
+          {filteredStudents.map(student => {
+            const frequency = getLaundryFrequency(student.id);
+            const suspiciousPatterns = detectSuspiciousPatterns(student.id);
+            return (
+              <GlassCard key={student.id} className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3">
+                      <h3 className="text-lg font-semibold text-gray-900 truncate">
+                        {maskName(student.name)}
+                      </h3>
+                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium self-start sm:self-center whitespace-nowrap ${
+                        getQRStatus(student) === 'Verified' ? 'bg-green-100 text-green-800' :
+                        getQRStatus(student) === 'Assigned' ? 'bg-blue-100 text-blue-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {getQRStatus(student)}
+                      </span>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600">Reg No:</span>
+                        <span className="ml-2 font-medium text-gray-900">{maskRollNumber(student.rollNumber)}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Hostel & Room:</span>
+                        <span className="ml-2 font-medium text-gray-900">{student.hostel} {student.room}</span>
+                      </div>
+                      <div className="sm:col-span-2">
+                        <span className="text-gray-600">Laundry Frequency:</span>
+                        <span className="ml-2 font-medium text-gray-900">
+                          {frequency.thisWeek}/week, {frequency.thisMonth}/month
                         </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <div className="text-sm">
-                          <p className="font-medium">{frequency.thisWeek}/week</p>
-                          <p className="text-gray-500">{frequency.thisMonth}/month</p>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4">
-                        {suspiciousPatterns.length > 0 ? (
-                          <div className="flex items-center gap-1">
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                              {suspiciousPatterns.length} flag{suspiciousPatterns.length > 1 ? 's' : ''}
+                      </div>
+                    </div>
+                    
+                    {suspiciousPatterns.length > 0 && (
+                      <div className="mt-3">
+                        <span className="text-gray-600 text-sm">Flags:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {suspiciousPatterns.map((flag, idx) => (
+                            <span key={idx} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                              {flag}
                             </span>
-                          </div>
-                        ) : (
-                          <span className="text-gray-500 text-sm">None</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-4">
-                        <button
-                          onClick={() => navigate(`/admin/students/${student.id}`)}
-                          className="text-blue-600 hover:text-blue-800"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </GlassCard>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex-shrink-0">
+                    <button
+                      onClick={() => navigate(`/admin/students/${student.id}`)}
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors min-h-[44px]"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span className="text-sm sm:text-base">View Details</span>
+                    </button>
+                  </div>
+                </div>
+              </GlassCard>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

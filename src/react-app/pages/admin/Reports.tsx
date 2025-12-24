@@ -92,28 +92,28 @@ export default function Reports() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-            <FileText className="w-8 h-8 text-green-600" />
-            Reports & Exports
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 md:py-8">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-xl md:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+            <FileText className="w-6 h-6 md:w-8 md:h-8 text-green-600 flex-shrink-0" />
+            <span className="truncate">Reports & Exports</span>
           </h1>
-          <p className="text-gray-600">Hostel office documentation</p>
+          <p className="text-sm md:text-base text-gray-600">Hostel office documentation</p>
         </div>
 
         {/* Filters */}
-        <GlassCard className="p-6 mb-6">
-          <div className="flex items-center gap-4 mb-4">
-            <Filter className="w-5 h-5 text-gray-600" />
-            <span className="font-medium text-gray-900">Report Filters</span>
+        <GlassCard className="p-4 md:p-6 mb-4 md:mb-6">
+          <div className="flex items-center gap-2 md:gap-4 mb-3 md:mb-4">
+            <Filter className="w-4 h-4 md:w-5 md:h-5 text-gray-600 flex-shrink-0" />
+            <span className="font-medium text-gray-900 text-sm md:text-base">Report Filters</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Report Type</label>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">Report Type</label>
               <select
                 value={reportType}
                 onChange={(e) => setReportType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
               >
                 <option value="daily">Daily Report</option>
                 <option value="weekly">Weekly Summary</option>
@@ -121,11 +121,11 @@ export default function Reports() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Hostel</label>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">Hostel</label>
               <select
                 value={hostelFilter}
                 onChange={(e) => setHostelFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
               >
                 <option value="all">All Hostels</option>
                 <option value="MH">MH</option>
@@ -133,73 +133,73 @@ export default function Reports() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">Start Date</label>
               <input
                 type="date"
                 value={dateRange.start}
                 onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">End Date</label>
               <input
                 type="date"
                 value={dateRange.end}
                 onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
               />
             </div>
           </div>
         </GlassCard>
 
         {/* Report Preview */}
-        <GlassCard className="p-6 mb-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900">Report Preview</h2>
+        <GlassCard className="p-4 md:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 md:mb-6 gap-3">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900">Report Preview</h2>
             <button
               onClick={() => setShowAuditTrail(!showAuditTrail)}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base min-h-[44px] w-full sm:w-auto"
             >
               {showAuditTrail ? 'Hide Audit Trail' : 'Show Audit Trail'}
             </button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-gray-900">{reportData.totalOrders}</p>
-              <p className="text-sm text-gray-600">Total Orders</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
+            <div className="text-center bg-gray-50 p-3 md:p-4 rounded-lg">
+              <p className="text-lg md:text-2xl font-bold text-gray-900">{reportData.totalOrders}</p>
+              <p className="text-xs md:text-sm text-gray-600">Total Orders</p>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-green-600">{reportData.completedOrders}</p>
-              <p className="text-sm text-gray-600">Completed</p>
+            <div className="text-center bg-green-50 p-3 md:p-4 rounded-lg">
+              <p className="text-lg md:text-2xl font-bold text-green-600">{reportData.completedOrders}</p>
+              <p className="text-xs md:text-sm text-gray-600">Completed</p>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-yellow-600">{reportData.pendingOrders}</p>
-              <p className="text-sm text-gray-600">Pending</p>
+            <div className="text-center bg-yellow-50 p-3 md:p-4 rounded-lg">
+              <p className="text-lg md:text-2xl font-bold text-yellow-600">{reportData.pendingOrders}</p>
+              <p className="text-xs md:text-sm text-gray-600">Pending</p>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-blue-600">{reportData.inProgressOrders}</p>
-              <p className="text-sm text-gray-600">In Progress</p>
+            <div className="text-center bg-blue-50 p-3 md:p-4 rounded-lg">
+              <p className="text-lg md:text-2xl font-bold text-blue-600">{reportData.inProgressOrders}</p>
+              <p className="text-xs md:text-sm text-gray-600">In Progress</p>
             </div>
           </div>
 
           {/* Audit Trail */}
           {showAuditTrail && (
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Audit Trail</h3>
-              <div className="space-y-3 max-h-96 overflow-y-auto">
+            <div className="border-t pt-4 md:pt-6">
+              <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-3 md:mb-4">Audit Trail</h3>
+              <div className="space-y-2 md:space-y-3 max-h-48 md:max-h-96 overflow-y-auto">
                 {auditTrail.map(event => (
-                  <div key={event.id} className="flex items-start gap-4 p-3 bg-gray-50 rounded-lg">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="font-medium text-gray-900">{event.action}</p>
-                        <p className="text-sm text-gray-500">
+                  <div key={event.id} className="flex items-start gap-2 md:gap-4 p-2 md:p-3 bg-gray-50 rounded-lg">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1 gap-1">
+                        <p className="font-medium text-gray-900 text-sm md:text-base truncate">{event.action}</p>
+                        <p className="text-xs md:text-sm text-gray-500 whitespace-nowrap">
                           {new Date(event.timestamp).toLocaleString()}
                         </p>
                       </div>
-                      <p className="text-sm text-gray-700 mb-1">{event.details}</p>
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <p className="text-xs md:text-sm text-gray-700 mb-1">{event.details}</p>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-gray-500">
                         <span>User: {event.user}</span>
                         {event.operator && <span>Operator: {event.operator}</span>}
                       </div>
@@ -212,35 +212,35 @@ export default function Reports() {
         </GlassCard>
 
         {/* Export Options */}
-        <GlassCard className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Download className="w-5 h-5 text-green-600" />
+        <GlassCard className="p-4 md:p-6">
+          <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6 flex items-center gap-2">
+            <Download className="w-4 h-4 md:w-5 md:h-5 text-green-600 flex-shrink-0" />
             Export Options
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-4">CSV Format</h3>
-              <p className="text-sm text-gray-600 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="bg-gray-50 p-4 md:p-6 rounded-lg">
+              <h3 className="font-semibold text-gray-900 mb-2 md:mb-4 text-sm md:text-base">CSV Format</h3>
+              <p className="text-xs md:text-sm text-gray-600 mb-3 md:mb-4">
                 Export data in CSV format for spreadsheet applications
               </p>
               <button
                 onClick={() => handleExport('csv')}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base min-h-[44px]"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 flex-shrink-0" />
                 Export as CSV
               </button>
             </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-4">PDF Format</h3>
-              <p className="text-sm text-gray-600 mb-4">
+            <div className="bg-gray-50 p-4 md:p-6 rounded-lg">
+              <h3 className="font-semibold text-gray-900 mb-2 md:mb-4 text-sm md:text-base">PDF Format</h3>
+              <p className="text-xs md:text-sm text-gray-600 mb-3 md:mb-4">
                 Generate a formatted PDF report
               </p>
               <button
                 onClick={() => handleExport('pdf')}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm md:text-base min-h-[44px]"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 flex-shrink-0" />
                 Export as PDF
               </button>
             </div>

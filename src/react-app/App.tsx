@@ -1,12 +1,18 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
 import { AuthProvider, useAuth } from '@/react-app/contexts/AuthContext';
 import { DataProvider } from '@/react-app/contexts/DataContext';
+import { ToastProvider } from '@/react-app/contexts/ToastContext';
 import ProtectedRoute from '@/react-app/components/ProtectedRoute';
 import Navbar from '@/react-app/components/Navbar';
 import MobileNav from '@/react-app/components/MobileNav';
+import ScrollToTop from '@/react-app/components/ScrollToTop';
 
 import Login from '@/react-app/pages/Login';
 import LandingPage from '@/react-app/pages/LandingPage';
+import GoogleRegistration from '@/react-app/pages/GoogleRegistration';
+import StudentRegistration from '@/react-app/pages/auth/StudentRegistration';
+import OperatorRegistration from '@/react-app/pages/auth/OperatorRegistration';
+import AdminRegistration from '@/react-app/pages/auth/AdminRegistration';
 
 import AdminDashboard from '@/react-app/pages/admin/Dashboard';
 import LaundryAnalytics from '@/react-app/pages/admin/LaundryAnalytics';
@@ -55,6 +61,7 @@ import StudentProfile from '@/react-app/pages/student/Profile';import ReportLost
 import StudentLostFound from '@/react-app/pages/student/LostFound';
 import OperatorProfile from '@/react-app/pages/operator/Profile';
 import AnomalyReporting from '@/react-app/pages/operator/AnomalyReporting';
+import OperatorHelpSupport from '@/react-app/pages/operator/HelpSupport';
 import DigitalSignature from '@/react-app/pages/operator/DigitalSignature';
 import BagLabelReplacement from '@/react-app/pages/operator/BagLabelReplacement';
 import ManualReceipt from '@/react-app/pages/operator/ManualReceipt';
@@ -78,6 +85,10 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/complete-profile" element={<GoogleRegistration />} />
+        <Route path="/register/student" element={<StudentRegistration />} />
+        <Route path="/register/operator" element={<OperatorRegistration />} />
+        <Route path="/register/admin" element={<AdminRegistration />} />
 
         {/* Admin Routes */}
         <Route
@@ -374,7 +385,7 @@ function AppContent() {
           path="/operator/help"
           element={
             <ProtectedRoute allowedRoles={['operator']}>
-              <AnomalyReporting />
+              <OperatorHelpSupport />
             </ProtectedRoute>
           }
         />
@@ -516,6 +527,14 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/student/submit/camera"
+          element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <CameraScannerPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {isAuthenticated && <MobileNav />}
     </div>
@@ -525,11 +544,14 @@ function AppContent() {
 export default function App() {
   return (
     <Router>
-      <AuthProvider>
-        <DataProvider>
-          <AppContent />
-        </DataProvider>
-      </AuthProvider>
+      <ScrollToTop />
+      <ToastProvider>
+        <AuthProvider>
+          <DataProvider>
+            <AppContent />
+          </DataProvider>
+        </AuthProvider>
+      </ToastProvider>
     </Router>
   );
 }

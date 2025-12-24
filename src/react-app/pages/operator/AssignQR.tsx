@@ -4,12 +4,10 @@ import { useData } from '@/react-app/contexts/DataContext';
 import { useAuth } from '@/react-app/contexts/AuthContext';
 import { QrCode, Camera, AlertCircle } from 'lucide-react';
 import GlassCard from '@/react-app/components/GlassCard';
-import CameraScanner from '@/react-app/components/CameraScanner';
 import { useToast } from '@/react-app/hooks/useToast';
 import { ToastContainer } from '@/react-app/components/Toast';
 
 export default function AssignQR() {
-  const [showScanner, setShowScanner] = useState(false);
   const [scannedCode, setScannedCode] = useState('');
   const [studentDetails, setStudentDetails] = useState({
     name: '',
@@ -31,11 +29,15 @@ export default function AssignQR() {
     }
   }, [location.state]);
 
-  const handleScan = (data: string) => {
-    setScannedCode(data);
-    setShowScanner(false);
-    showToast('QR Code scanned successfully', 'success');
-  };
+  // Check if we returned from camera scanner with scanned data
+  useEffect(() => {
+    if (location.state?.scannedCode) {
+      setScannedCode(location.state.scannedCode);
+      showToast('QR Code scanned successfully', 'success');
+      // Clear the state to prevent re-processing
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate, location.pathname, showToast]);
 
   const handleAssign = async () => {
     if (!scannedCode || !studentDetails.name || !studentDetails.rollNumber) {
@@ -44,10 +46,10 @@ export default function AssignQR() {
     }
 
     let qr = qrCodes.find(q => q.code === scannedCode);
-    
+
     if (!qr) {
       // Create new QR code if it doesn't exist
-      qr = addQRCode({
+      qr = await addQRCode({
         code: scannedCode,
         status: 'assigned'
       });
@@ -84,18 +86,18 @@ export default function AssignQR() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <ToastContainer toasts={toasts} onClose={removeToast} />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         <div className="max-w-2xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <QrCode className="w-8 h-8 text-blue-600" />
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+              <QrCode className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
               Assign QR Code
             </h1>
-            <p className="text-gray-600">Scan physical QR tag and assign to student</p>
+            <p className="text-sm sm:text-base text-gray-600">Scan physical QR tag and assign to student</p>
           </div>
 
-          <GlassCard className="p-6 mb-6">
-            <div className="space-y-6">
+          <GlassCard className="p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="space-y-4 sm:space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   QR Code
@@ -106,20 +108,22 @@ export default function AssignQR() {
                     value={scannedCode}
                     onChange={(e) => setScannedCode(e.target.value)}
                     placeholder="Scanned QR code will appear here"
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[44px]"
                     readOnly
                   />
                   <button
-                    onClick={() => setShowScanner(true)}
-                    className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg"
+                    onClick={() => navigate('/operator/scan/camera', {
+                      state: { returnPath: '/operator/assign' }
+                    })}
+                    className="flex items-center justify-center gap-2 px-3 sm:px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg min-h-[44px] min-w-[44px] flex-shrink-0"
                   >
-                    <Camera className="w-5 h-5" />
+                    <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span className="hidden sm:inline">Scan</span>
                   </button>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Student Name *
@@ -129,7 +133,7 @@ export default function AssignQR() {
                     value={studentDetails.name}
                     onChange={(e) => setStudentDetails(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Enter student name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[44px]"
                   />
                 </div>
 
@@ -142,7 +146,7 @@ export default function AssignQR() {
                     value={studentDetails.rollNumber}
                     onChange={(e) => setStudentDetails(prev => ({ ...prev, rollNumber: e.target.value }))}
                     placeholder="e.g., 21BCE0001"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[44px]"
                   />
                 </div>
 
@@ -153,7 +157,7 @@ export default function AssignQR() {
                   <select
                     value={studentDetails.gender}
                     onChange={(e) => setStudentDetails(prev => ({ ...prev, gender: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[44px]"
                   >
                     <option value="">Select gender</option>
                     <option value="male">Male</option>
@@ -169,7 +173,7 @@ export default function AssignQR() {
                   <select
                     value={studentDetails.hostel}
                     onChange={(e) => setStudentDetails(prev => ({ ...prev, hostel: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[44px]"
                   >
                     <option value="">Select hostel</option>
                     {hostels.map(hostel => (
@@ -178,7 +182,7 @@ export default function AssignQR() {
                   </select>
                 </div>
 
-                <div className="md:col-span-2">
+                <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Room Number
                   </label>
@@ -187,7 +191,7 @@ export default function AssignQR() {
                     value={studentDetails.room}
                     onChange={(e) => setStudentDetails(prev => ({ ...prev, room: e.target.value }))}
                     placeholder="e.g., 101"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[44px]"
                   />
                 </div>
               </div>
@@ -195,19 +199,19 @@ export default function AssignQR() {
               <button
                 onClick={handleAssign}
                 disabled={!scannedCode || !studentDetails.name || !studentDetails.rollNumber}
-                className="w-full px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="w-full px-4 sm:px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium min-h-[44px] flex items-center justify-center"
               >
                 Assign QR Code to Student
               </button>
             </div>
           </GlassCard>
 
-          <GlassCard className="p-4 bg-blue-50/50 border-blue-200">
+          <GlassCard className="p-3 sm:p-4 bg-blue-50/50 border-blue-200">
             <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-blue-900">
                 <p className="font-medium mb-1">Instructions:</p>
-                <ol className="list-decimal list-inside space-y-1 text-blue-800">
+                <ol className="list-decimal list-inside space-y-1 text-blue-800 text-xs sm:text-sm">
                   <li>Click "Scan" to open camera and scan physical QR tag</li>
                   <li>Fill in student details (name and registration number required)</li>
                   <li>Click "Assign" to link QR code to student</li>
@@ -219,12 +223,6 @@ export default function AssignQR() {
         </div>
       </div>
 
-      {showScanner && (
-        <CameraScanner
-          onScan={handleScan}
-          onClose={() => setShowScanner(false)}
-        />
-      )}
     </div>
   );
 }

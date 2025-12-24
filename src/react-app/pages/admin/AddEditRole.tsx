@@ -109,39 +109,40 @@ export default function AddEditRole() {
 
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 md:py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 md:gap-4">
+            <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
               <button
                 onClick={handleCancel}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
               </button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                  <Shield className="w-6 h-6 text-blue-600" />
-                  {isEditing ? 'Edit Role' : 'Create New Role'}
+              <div className="min-w-0">
+                <h1 className="text-lg md:text-2xl font-bold text-gray-900 flex items-center gap-2 truncate">
+                  <Shield className="w-5 h-5 md:w-6 md:h-6 text-blue-600 flex-shrink-0" />
+                  <span className="truncate">{isEditing ? 'Edit Role' : 'Create New Role'}</span>
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-sm md:text-base">
                   {isEditing ? 'Modify role permissions and settings' : 'Configure a new role with specific permissions'}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
               <button
                 onClick={handleCancel}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 flex items-center gap-2"
+                className="px-3 md:px-4 py-2 text-gray-600 hover:text-gray-800 flex items-center gap-1 md:gap-2 text-sm md:text-base min-h-[44px]"
               >
-                <X className="w-4 h-4" />
-                Cancel
+                <X className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden sm:inline">Cancel</span>
               </button>
               <button
                 onClick={handleSubmit}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
+                className="px-4 md:px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-1 md:gap-2 transition-colors text-sm md:text-base min-h-[44px]"
               >
-                <Save className="w-4 h-4" />
-                {isEditing ? 'Update Role' : 'Create Role'}
+                <Save className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden sm:inline">{isEditing ? 'Update Role' : 'Create Role'}</span>
+                <span className="sm:hidden">{isEditing ? 'Update' : 'Create'}</span>
               </button>
             </div>
           </div>
@@ -149,33 +150,33 @@ export default function AddEditRole() {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 md:py-8">
         <div className="max-w-4xl mx-auto">
-          <GlassCard className="p-8">
-            <div className="space-y-8">
+          <GlassCard className="p-4 md:p-8">
+            <div className="space-y-6 md:space-y-8">
               {/* Basic Information */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">Basic Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6">Basic Information</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
                       Role Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm md:text-base"
                       placeholder="e.g., Hostel Admin"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Description</label>
                     <input
                       type="text"
                       value={formData.description}
                       onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm md:text-base"
                       placeholder="Brief description of the role"
                     />
                   </div>
@@ -184,18 +185,18 @@ export default function AddEditRole() {
 
               {/* Permissions */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">Permissions</h2>
-                <p className="text-gray-600 mb-6">
+                <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6">Permissions</h2>
+                <p className="text-gray-600 mb-4 md:mb-6 text-sm md:text-base">
                   Select the permissions this role should have. Users with this role will be able to perform these actions.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {availablePermissions.map(permission => (
-                    <label key={permission} className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors cursor-pointer">
+                    <label key={permission} className="flex items-center gap-2 md:gap-3 p-3 md:p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors cursor-pointer min-h-[60px] md:min-h-[72px]">
                       <input
                         type="checkbox"
                         checked={formData.permissions.includes(permission)}
                         onChange={() => togglePermission(permission)}
-                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 flex-shrink-0"
                       />
                       <div>
                         <span className="text-sm font-medium text-gray-900 capitalize">
@@ -211,23 +212,23 @@ export default function AddEditRole() {
               </div>
 
               {/* Summary */}
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Role Summary</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-600">Selected Permissions:</span>
-                    <span className="ml-2 font-medium text-gray-900">{formData.permissions.length}</span>
+              <div className="bg-gray-50 rounded-lg p-4 md:p-6">
+                <h3 className="text-base md:text-lg font-medium text-gray-900 mb-3 md:mb-4">Role Summary</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 text-sm md:text-base">
+                  <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <span className="text-gray-600 mb-1 sm:mb-0">Selected Permissions:</span>
+                    <span className="font-medium text-gray-900">{formData.permissions.length}</span>
                   </div>
-                  <div>
-                    <span className="text-gray-600">Role Type:</span>
-                    <span className="ml-2 font-medium text-gray-900">
+                  <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <span className="text-gray-600 mb-1 sm:mb-0">Role Type:</span>
+                    <span className="font-medium text-gray-900">
                       {formData.permissions.length === availablePermissions.length ? 'Full Access' :
                        formData.permissions.length > 5 ? 'Extended Access' : 'Limited Access'}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-gray-600">Status:</span>
-                    <span className="ml-2 font-medium text-green-600">Ready to {isEditing ? 'Update' : 'Create'}</span>
+                  <div className="flex flex-col sm:flex-row sm:justify-between col-span-1 sm:col-span-2 lg:col-span-1">
+                    <span className="text-gray-600 mb-1 sm:mb-0">Status:</span>
+                    <span className="font-medium text-green-600">Ready to {isEditing ? 'Update' : 'Create'}</span>
                   </div>
                 </div>
               </div>

@@ -109,14 +109,14 @@ export default function AlertDetails() {
 
   if (!selectedAlert) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <AlertTriangle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-600 mb-2">Alert Not Found</h2>
-          <p className="text-gray-500 mb-4">The requested alert could not be found.</p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center px-4">
+        <div className="text-center max-w-sm mx-auto">
+          <AlertTriangle className="w-12 h-12 md:w-16 md:h-16 text-gray-300 mx-auto mb-3 md:mb-4" />
+          <h2 className="text-lg md:text-xl font-semibold text-gray-600 mb-2">Alert Not Found</h2>
+          <p className="text-sm md:text-base text-gray-500 mb-3 md:mb-4">The requested alert could not be found.</p>
           <button
             onClick={handleBack}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm md:text-base min-h-[44px] w-full sm:w-auto"
           >
             Back to Alerts
           </button>
@@ -129,61 +129,61 @@ export default function AlertDetails() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="container mx-auto px-3 sm:px-4 py-3 md:py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
               <button
                 onClick={handleBack}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center flex-shrink-0"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
               </button>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-100 rounded-md">
+              <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                <div className="p-2 bg-red-100 rounded-md flex-shrink-0">
                   {getSeverityIcon(selectedAlert.severity)}
                 </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Alert Details</h1>
-                  <p className="text-gray-600">{selectedAlert.title}</p>
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 truncate">Alert Details</h1>
+                  <p className="text-xs md:text-sm text-gray-600 truncate">{selectedAlert.title}</p>
                 </div>
               </div>
             </div>
-            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border ${getSeverityColor(selectedAlert.severity)}`}>
+            <div className={`inline-flex items-center gap-2 px-3 py-2 md:px-4 rounded-lg text-xs md:text-sm font-medium border ${getSeverityColor(selectedAlert.severity)} min-h-[44px]`}>
               {getSeverityIcon(selectedAlert.severity)}
-              <span className="capitalize">{selectedAlert.severity}</span>
+              <span className="capitalize">Severity: {selectedAlert.severity}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 py-4 md:py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
             {/* Alert Information */}
-            <GlassCard className="p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <GlassCard className="p-4 md:p-6 lg:p-8">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6 flex items-center gap-2">
                 {getTypeIcon(selectedAlert.type)}
-                Alert Information
+                <span className="truncate">Alert Information</span>
               </h3>
 
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Type</label>
                   <div className="flex items-center gap-2">
                     {getTypeIcon(selectedAlert.type)}
-                    <span className="text-lg font-semibold text-gray-900 capitalize">{selectedAlert.type}</span>
+                    <span className="text-base md:text-lg font-semibold text-gray-900 capitalize">{selectedAlert.type}</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                  <p className="text-gray-700 bg-gray-50 rounded-lg p-4">{selectedAlert.message}</p>
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Message</label>
+                  <p className="text-sm md:text-base text-gray-700 bg-gray-50 rounded-lg p-3 md:p-4">{selectedAlert.message}</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Timestamp</label>
-                  <p className="text-gray-700">
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Timestamp</label>
+                  <p className="text-sm md:text-base text-gray-700">
                     {new Date(selectedAlert.timestamp).toLocaleDateString('en-US', {
                       weekday: 'long',
                       year: 'numeric',
@@ -191,7 +191,7 @@ export default function AlertDetails() {
                       day: 'numeric'
                     })}
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-xs md:text-sm text-gray-500">
                     {new Date(selectedAlert.timestamp).toLocaleTimeString('en-US', {
                       hour: '2-digit',
                       minute: '2-digit'
@@ -200,22 +200,22 @@ export default function AlertDetails() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Status</label>
                   <div className="flex items-center gap-2">
                     {selectedAlert.resolved ? (
                       <>
-                        <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="text-green-700 font-medium">Resolved</span>
+                        <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-500 flex-shrink-0" />
+                        <span className="text-sm md:text-base text-green-700 font-medium">Resolved</span>
                       </>
                     ) : selectedAlert.escalated ? (
                       <>
-                        <AlertTriangle className="w-5 h-5 text-red-500" />
-                        <span className="text-red-700 font-medium">Escalated</span>
+                        <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-red-500 flex-shrink-0" />
+                        <span className="text-sm md:text-base text-red-700 font-medium">Escalated</span>
                       </>
                     ) : (
                       <>
-                        <Clock className="w-5 h-5 text-orange-500" />
-                        <span className="text-orange-700 font-medium">Active</span>
+                        <Clock className="w-4 h-4 md:w-5 md:h-5 text-orange-500 flex-shrink-0" />
+                        <span className="text-sm md:text-base text-orange-700 font-medium">Active</span>
                       </>
                     )}
                   </div>
@@ -224,20 +224,20 @@ export default function AlertDetails() {
             </GlassCard>
 
             {/* Escalation Actions */}
-            <GlassCard className="p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-                <Send className="w-5 h-5 text-red-500" />
-                Escalation Actions
+            <GlassCard className="p-4 md:p-6 lg:p-8">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6 flex items-center gap-2">
+                <Send className="w-4 h-4 md:w-5 md:h-5 text-red-500 flex-shrink-0" />
+                <span className="truncate">Escalation Actions</span>
               </h3>
 
               {!selectedAlert.resolved && !selectedAlert.escalated && (
-                <div className="space-y-6">
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                      <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
+                <div className="space-y-4 md:space-y-6">
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 md:p-4">
+                    <div className="flex items-start gap-2 md:gap-3">
+                      <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-red-500 mt-0.5 flex-shrink-0" />
                       <div>
-                        <h4 className="font-medium text-red-800 mb-1">Escalate Alert</h4>
-                        <p className="text-sm text-red-700">
+                        <h4 className="font-medium text-red-800 mb-1 text-sm md:text-base">Escalate Alert</h4>
+                        <p className="text-xs md:text-sm text-red-700">
                           This action will notify higher management and create an escalation record.
                         </p>
                       </div>
@@ -245,40 +245,40 @@ export default function AlertDetails() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
                       Escalation Notes *
                     </label>
                     <textarea
                       value={escalationNote}
                       onChange={(e) => setEscalationNote(e.target.value)}
                       placeholder="Describe the escalation reason and required actions..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
-                      rows={6}
+                      className="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none text-sm md:text-base min-h-[100px]"
+                      rows={4}
                     />
                   </div>
 
                   <button
                     onClick={escalateAlert}
-                    className="w-full px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center justify-center gap-2 font-medium"
+                    className="w-full px-4 py-2 md:px-6 md:py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center justify-center gap-2 font-medium text-sm md:text-base min-h-[44px]"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-4 h-4 flex-shrink-0" />
                     Escalate Alert
                   </button>
                 </div>
               )}
 
               {selectedAlert.escalated && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3 md:p-4">
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-500 mt-0.5 flex-shrink-0" />
                     <div>
-                      <h4 className="font-medium text-green-800 mb-1">Alert Escalated</h4>
-                      <p className="text-sm text-green-700">
+                      <h4 className="font-medium text-green-800 mb-1 text-sm md:text-base">Alert Escalated</h4>
+                      <p className="text-xs md:text-sm text-green-700">
                         This alert has been escalated and is being handled by management.
                       </p>
                       {selectedAlert.escalationNotes && (
-                        <div className="mt-3 p-3 bg-white rounded border">
-                          <p className="text-sm text-gray-700">{selectedAlert.escalationNotes}</p>
+                        <div className="mt-2 md:mt-3 p-2 md:p-3 bg-white rounded border">
+                          <p className="text-xs md:text-sm text-gray-700">{selectedAlert.escalationNotes}</p>
                         </div>
                       )}
                     </div>
@@ -287,12 +287,12 @@ export default function AlertDetails() {
               )}
 
               {selectedAlert.resolved && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 md:p-4">
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-blue-500 mt-0.5 flex-shrink-0" />
                     <div>
-                      <h4 className="font-medium text-blue-800 mb-1">Alert Resolved</h4>
-                      <p className="text-sm text-blue-700">
+                      <h4 className="font-medium text-blue-800 mb-1 text-sm md:text-base">Alert Resolved</h4>
+                      <p className="text-xs md:text-sm text-blue-700">
                         This alert has been resolved and no further action is required.
                       </p>
                     </div>

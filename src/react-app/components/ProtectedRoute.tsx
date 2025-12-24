@@ -8,7 +8,11 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, needsProfileCompletion } = useAuth();
+
+  if (needsProfileCompletion) {
+    return <Navigate to="/complete-profile" replace />;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

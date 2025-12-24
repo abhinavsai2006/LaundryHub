@@ -1,0 +1,37 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "laundryItems",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "studentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "submittedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "laundryItems",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "submittedAt",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

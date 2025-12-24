@@ -79,37 +79,37 @@ export default function Machines() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 pb-20 md:pb-0">
       <ToastContainer toasts={toasts} onClose={removeToast} />
-      
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-            <Settings className="w-8 h-8 text-blue-600" />
-            Washing Machine Management
+
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 md:py-8">
+        <div className="mb-4 md:mb-8">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 md:mb-2 flex items-center gap-2">
+            <Settings className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 text-blue-600 flex-shrink-0" />
+            <span className="truncate">Washing Machine Management</span>
           </h1>
-          <p className="text-gray-600">Operational readiness</p>
+          <p className="text-sm md:text-base text-gray-600">Operational readiness</p>
         </div>
 
         {/* Filters and Add Button */}
-        <div className="flex items-center justify-between mb-6">
-          <GlassCard className="p-6 flex-1 mr-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4 md:mb-6">
+          <GlassCard className="p-3 md:p-4 lg:p-6 flex-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-gray-400 flex-shrink-0" />
                 <input
                   type="text"
                   placeholder="Search machines..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-9 md:pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
                 />
               </div>
               <div>
                 <select
                   value={hostelFilter}
                   onChange={(e) => setHostelFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
                 >
                   <option value="all">All Hostels</option>
                   <option value="MH">MH</option>
@@ -120,51 +120,53 @@ export default function Machines() {
           </GlassCard>
           <button
             onClick={() => navigate('/admin/machines/add')}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+            className="flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg text-sm md:text-base min-h-[44px] lg:min-w-[140px] w-full lg:w-auto"
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-4 h-4 md:w-5 md:h-5" />
             Add Machine
           </button>
         </div>
 
         {/* Machines Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4 lg:gap-6">
           {filteredMachines.map(machine => {
             const utilization = getUtilizationData(machine.id);
             return (
-              <GlassCard key={machine.id} className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
+              <GlassCard key={machine.id} className="p-3 md:p-4 lg:p-6">
+                <div className="flex items-start justify-between mb-3 md:mb-4">
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold text-gray-900">{machine.name}</h3>
+                      <h3 className="font-semibold text-gray-900 text-sm md:text-base truncate">{machine.name}</h3>
                       <button
                         onClick={() => handleRemoveMachine(machine.id)}
-                        className="p-1 text-red-600 hover:text-red-800 hover:bg-red-100 rounded"
+                        className="p-1 text-red-600 hover:text-red-800 hover:bg-red-100 rounded flex-shrink-0 min-h-[32px] min-w-[32px] flex items-center justify-center"
                         title="Remove Machine"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
                       </button>
                     </div>
-                    <p className="text-sm text-gray-600">ID: {machine.id}</p>
-                    <p className="text-sm text-gray-600">Type: {machine.type}</p>
-                    <p className="text-sm text-gray-600">Hostel: {machine.hostel}</p>
+                    <p className="text-xs md:text-sm text-gray-600 truncate">ID: {machine.id}</p>
+                    <p className="text-xs md:text-sm text-gray-600 truncate">Type: {machine.type}</p>
+                    <p className="text-xs md:text-sm text-gray-600 truncate">Hostel: {machine.hostel}</p>
                   </div>
-                  {getStatusIcon(machine.status)}
+                  <div className="flex-shrink-0 ml-2">
+                    {getStatusIcon(machine.status)}
+                  </div>
                 </div>
 
-                <div className="mb-4">
+                <div className="mb-3 md:mb-4">
                   <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(machine.status)}`}>
                     {machine.status}
                   </span>
                 </div>
 
                 {/* Status Toggle */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <div className="mb-3 md:mb-4">
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">Status</label>
                   <select
                     value={machine.status}
                     onChange={(e) => handleStatusToggle(machine.id, e.target.value as 'available' | 'in-use' | 'maintenance')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
                   >
                     <option value="available">Available</option>
                     <option value="in-use">In Use</option>
@@ -173,28 +175,28 @@ export default function Machines() {
                 </div>
 
                 {/* Maintenance Scheduling */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
+                <div className="mb-3 md:mb-4">
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                    <Calendar className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
                     Schedule Maintenance
                   </label>
                   <input
                     type="datetime-local"
                     value={maintenanceSchedule[machine.id] || ''}
                     onChange={(e) => scheduleMaintenance(machine.id, e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
                   />
                 </div>
 
                 {/* Utilization View */}
-                <div className="mb-4">
+                <div className="mb-3 md:mb-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <BarChart3 className="w-4 h-4 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-700">Utilization</span>
+                    <BarChart3 className="w-3 h-3 md:w-4 md:h-4 text-gray-600 flex-shrink-0" />
+                    <span className="text-xs md:text-sm font-medium text-gray-700">Utilization</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2 md:h-3 mb-2">
                     <div
-                      className="bg-blue-500 h-3 rounded-full transition-all duration-300"
+                      className="bg-blue-500 h-2 md:h-3 rounded-full transition-all duration-300"
                       style={{ width: `${utilization.utilization}%` }}
                     ></div>
                   </div>
@@ -204,10 +206,10 @@ export default function Machines() {
 
                 {/* Maintenance Notes */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Maintenance Notes</label>
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">Maintenance Notes</label>
                   <textarea
                     placeholder="Add maintenance notes..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm md:text-base"
                     rows={3}
                     defaultValue={machine.notes || ''}
                     onBlur={(e) => updateMachine(machine.id, { notes: e.target.value })}

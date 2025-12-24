@@ -51,21 +51,21 @@ export default function SystemSettings() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <ToastContainer toasts={toasts} onClose={removeToast} />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <Settings className="w-8 h-8 text-purple-600" />
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+              <Settings className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
               System Settings
             </h1>
-            <p className="text-gray-600">Configuration control</p>
+            <p className="text-sm sm:text-base text-gray-600">Configuration control</p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Laundry Capacity */}
-            <GlassCard className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Laundry Capacity</h2>
-              <div className="space-y-4">
+            <GlassCard className="p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Laundry Capacity</h2>
+              <div className="space-y-3 sm:space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Capacity per Hostel/Day
@@ -74,7 +74,7 @@ export default function SystemSettings() {
                     type="number"
                     value={settings.capacityPerHostel}
                     onChange={(e) => updateSetting('capacityPerHostel', parseInt(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base"
                   />
                   <p className="text-xs text-gray-500 mt-1">Maximum laundry bags accepted per hostel per day</p>
                 </div>
@@ -82,9 +82,9 @@ export default function SystemSettings() {
             </GlassCard>
 
             {/* Laundry Limits */}
-            <GlassCard className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Laundry Limits</h2>
-              <div className="space-y-4">
+            <GlassCard className="p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Laundry Limits</h2>
+              <div className="space-y-3 sm:space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Max Laundry per Student per Week
@@ -93,7 +93,7 @@ export default function SystemSettings() {
                     type="number"
                     value={settings.maxLaundryPerStudentPerWeek}
                     onChange={(e) => updateSetting('maxLaundryPerStudentPerWeek', parseInt(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base"
                   />
                   <p className="text-xs text-gray-500 mt-1">Maximum laundry submissions allowed per student per week</p>
                 </div>
@@ -101,70 +101,70 @@ export default function SystemSettings() {
             </GlassCard>
 
             {/* Process Steps */}
-            <GlassCard className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Process Steps</h2>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-900">Enable Status Stages</h3>
-                    <p className="text-sm text-gray-600">Allow tracking through submitted, picked up, washing, drying, ready, delivered</p>
+            <GlassCard className="p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Process Steps</h2>
+              <div className="space-y-4 sm:space-y-4">
+                <div className="flex items-start sm:items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">Enable Status Stages</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Allow tracking through submitted, picked up, washing, drying, ready, delivered</p>
                   </div>
                   <button
                     onClick={() => updateSetting('enableStatusStages', !settings.enableStatusStages)}
-                    className={`p-2 rounded-full ${settings.enableStatusStages ? 'bg-purple-600' : 'bg-gray-300'}`}
+                    className={`p-2 rounded-full flex-shrink-0 ${settings.enableStatusStages ? 'bg-purple-600' : 'bg-gray-300'} min-h-[44px] min-w-[44px] flex items-center justify-center`}
                   >
                     {settings.enableStatusStages ? (
-                      <ToggleRight className="w-6 h-6 text-white" />
+                      <ToggleRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     ) : (
-                      <ToggleLeft className="w-6 h-6 text-gray-600" />
+                      <ToggleLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                     )}
                   </button>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-900">Enable QR Verification</h3>
-                    <p className="text-sm text-gray-600">Require QR code scanning for laundry submission and collection</p>
+                <div className="flex items-start sm:items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">Enable QR Verification</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Require QR code scanning for laundry submission and collection</p>
                   </div>
                   <button
                     onClick={() => updateSetting('enableQRVerification', !settings.enableQRVerification)}
-                    className={`p-2 rounded-full ${settings.enableQRVerification ? 'bg-purple-600' : 'bg-gray-300'}`}
+                    className={`p-2 rounded-full flex-shrink-0 ${settings.enableQRVerification ? 'bg-purple-600' : 'bg-gray-300'} min-h-[44px] min-w-[44px] flex items-center justify-center`}
                   >
                     {settings.enableQRVerification ? (
-                      <ToggleRight className="w-6 h-6 text-white" />
+                      <ToggleRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     ) : (
-                      <ToggleLeft className="w-6 h-6 text-gray-600" />
+                      <ToggleLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                     )}
                   </button>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-900">Enable Operator Assignment</h3>
-                    <p className="text-sm text-gray-600">Allow operators to be assigned to laundry sessions</p>
+                <div className="flex items-start sm:items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">Enable Operator Assignment</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Allow operators to be assigned to laundry sessions</p>
                   </div>
                   <button
                     onClick={() => updateSetting('enableOperatorAssignment', !settings.enableOperatorAssignment)}
-                    className={`p-2 rounded-full ${settings.enableOperatorAssignment ? 'bg-purple-600' : 'bg-gray-300'}`}
+                    className={`p-2 rounded-full flex-shrink-0 ${settings.enableOperatorAssignment ? 'bg-purple-600' : 'bg-gray-300'} min-h-[44px] min-w-[44px] flex items-center justify-center`}
                   >
                     {settings.enableOperatorAssignment ? (
-                      <ToggleRight className="w-6 h-6 text-white" />
+                      <ToggleRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     ) : (
-                      <ToggleLeft className="w-6 h-6 text-gray-600" />
+                      <ToggleLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                     )}
                   </button>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-900">Enable Lost & Found</h3>
-                    <p className="text-sm text-gray-600">Allow students to report and claim lost items</p>
+                <div className="flex items-start sm:items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">Enable Lost & Found</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Allow students to report and claim lost items</p>
                   </div>
                   <button
                     onClick={() => updateSetting('enableLostAndFound', !settings.enableLostAndFound)}
-                    className={`p-2 rounded-full ${settings.enableLostAndFound ? 'bg-purple-600' : 'bg-gray-300'}`}
+                    className={`p-2 rounded-full flex-shrink-0 ${settings.enableLostAndFound ? 'bg-purple-600' : 'bg-gray-300'} min-h-[44px] min-w-[44px] flex items-center justify-center`}
                   >
                     {settings.enableLostAndFound ? (
-                      <ToggleRight className="w-6 h-6 text-white" />
+                      <ToggleRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     ) : (
-                      <ToggleLeft className="w-6 h-6 text-gray-600" />
+                      <ToggleLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                     )}
                   </button>
                 </div>
@@ -176,7 +176,7 @@ export default function SystemSettings() {
                     type="number"
                     value={settings.delayThreshold}
                     onChange={(e) => updateSetting('delayThreshold', parseInt(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base"
                   />
                   <p className="text-xs text-gray-500 mt-1">Hours after submission to mark as delayed</p>
                 </div>
@@ -184,25 +184,25 @@ export default function SystemSettings() {
             </GlassCard>
 
             {/* Notifications */}
-            <GlassCard className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Bell className="w-5 h-5 text-purple-600" />
+            <GlassCard className="p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
                 Notification Settings
               </h2>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-900">Enable Notifications</h3>
-                    <p className="text-sm text-gray-600">Send alerts for delays, maintenance, and high load</p>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-start sm:items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">Enable Notifications</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Send alerts for delays, maintenance, and high load</p>
                   </div>
                   <button
                     onClick={() => updateSetting('notificationsEnabled', !settings.notificationsEnabled)}
-                    className={`p-2 rounded-full ${settings.notificationsEnabled ? 'bg-purple-600' : 'bg-gray-300'}`}
+                    className={`p-2 rounded-full flex-shrink-0 ${settings.notificationsEnabled ? 'bg-purple-600' : 'bg-gray-300'} min-h-[44px] min-w-[44px] flex items-center justify-center`}
                   >
                     {settings.notificationsEnabled ? (
-                      <ToggleRight className="w-6 h-6 text-white" />
+                      <ToggleRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     ) : (
-                      <ToggleLeft className="w-6 h-6 text-gray-600" />
+                      <ToggleLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                     )}
                   </button>
                 </div>
@@ -210,44 +210,45 @@ export default function SystemSettings() {
             </GlassCard>
 
             {/* QR Code Management */}
-            <GlassCard className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">QR Code Management</h2>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-900">Auto-assign QR Codes</h3>
-                    <p className="text-sm text-gray-600">Automatically assign QR codes to new laundry submissions</p>
+            <GlassCard className="p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">QR Code Management</h2>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-start sm:items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">Auto-assign QR Codes</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Automatically assign QR codes to new laundry submissions</p>
                   </div>
                   <button
                     onClick={() => updateSetting('autoAssignQRCodes', !settings.autoAssignQRCodes)}
-                    className={`p-2 rounded-full ${settings.autoAssignQRCodes ? 'bg-purple-600' : 'bg-gray-300'}`}
+                    className={`p-2 rounded-full flex-shrink-0 ${settings.autoAssignQRCodes ? 'bg-purple-600' : 'bg-gray-300'} min-h-[44px] min-w-[44px] flex items-center justify-center`}
                   >
                     {settings.autoAssignQRCodes ? (
-                      <ToggleRight className="w-6 h-6 text-white" />
+                      <ToggleRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     ) : (
-                      <ToggleLeft className="w-6 h-6 text-gray-600" />
+                      <ToggleLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                     )}
                   </button>
                 </div>
-                <div className="pt-4 border-t border-gray-200 space-y-3">
-                  <button className="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 transition-colors mr-3">
-                    Reissue QR Codes
-                  </button>
-                  <p className="text-xs text-gray-500">Generate new QR codes for all students (keeps assignments)</p>
-                  <br />
-                  <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors mr-3">
-                    Reset All QR Codes
-                  </button>
-                  <p className="text-xs text-gray-500">This will unassign all QR codes and reset the system</p>
+                <div className="pt-3 sm:pt-4 border-t border-gray-200 space-y-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button className="flex-1 px-4 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium min-h-[44px] text-sm sm:text-base">
+                      Reissue QR Codes
+                    </button>
+                    <button className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium min-h-[44px] text-sm sm:text-base">
+                      Reset All QR Codes
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500">Reissue: Generate new QR codes for all students (keeps assignments)</p>
+                  <p className="text-xs text-gray-500">Reset: Unassign all QR codes and reset the system</p>
                 </div>
               </div>
             </GlassCard>
 
             {/* Save Button */}
-            <div className="flex justify-end">
+            <div className="flex justify-center sm:justify-end">
               <button
                 onClick={handleSave}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg font-medium"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 sm:py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg font-medium min-h-[48px] text-base"
               >
                 <Save className="w-5 h-5" />
                 Save Settings

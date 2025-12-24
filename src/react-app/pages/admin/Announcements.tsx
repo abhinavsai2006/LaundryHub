@@ -150,26 +150,26 @@ export default function Announcements() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <ToastContainer toasts={toasts} onClose={removeToast} />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 md:py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <Bell className="w-8 h-8 text-blue-600" />
-              Hostel Announcements
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-xl md:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+              <Bell className="w-6 h-6 md:w-8 md:h-8 text-blue-600 flex-shrink-0" />
+              <span className="truncate">Hostel Announcements</span>
             </h1>
-            <p className="text-gray-600">Create and manage announcements for students</p>
+            <p className="text-gray-600 text-sm md:text-base">Create and manage announcements for students</p>
           </div>
 
           {/* Create Announcement */}
-          <GlassCard className="p-6 mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Plus className="w-5 h-5 text-blue-600" />
-              Create New Announcement
+          <GlassCard className="p-4 md:p-6 mb-6 md:mb-8">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6 flex items-center gap-2">
+              <Plus className="w-4 h-4 md:w-5 md:h-5 text-blue-600 flex-shrink-0" />
+              <span className="truncate">Create New Announcement</span>
             </h2>
             
-            <div className="space-y-4">
+            <div className="space-y-4 md:space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1 md:mb-2">
                   Title *
                 </label>
                 <input
@@ -177,12 +177,12 @@ export default function Announcements() {
                   value={newAnnouncement.title}
                   onChange={(e) => setNewAnnouncement(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="Announcement title"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1 md:mb-2">
                   Message *
                 </label>
                 <textarea
@@ -190,103 +190,105 @@ export default function Announcements() {
                   onChange={(e) => setNewAnnouncement(prev => ({ ...prev, message: e.target.value }))}
                   placeholder="Announcement message"
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Target Gender
-                </label>
-                <select
-                  value={newAnnouncement.gender}
-                  onChange={(e) => setNewAnnouncement(prev => ({ ...prev, gender: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  {genders.map(gender => (
-                    <option key={gender} value={gender}>
-                      {gender === 'all' ? 'All Genders' : gender.charAt(0).toUpperCase() + gender.slice(1)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Priority Level
-                </label>
-                <select
-                  value={newAnnouncement.priority}
-                  onChange={(e) => setNewAnnouncement(prev => ({ ...prev, priority: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="normal">Normal</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
-                </select>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 md:mb-2">
+                    Target Gender
+                  </label>
+                  <select
+                    value={newAnnouncement.gender}
+                    onChange={(e) => setNewAnnouncement(prev => ({ ...prev, gender: e.target.value }))}
+                    className="w-full px-3 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
+                  >
+                    {genders.map(gender => (
+                      <option key={gender} value={gender}>
+                        {gender === 'all' ? 'All Genders' : gender.charAt(0).toUpperCase() + gender.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 md:mb-2">
+                    Priority Level
+                  </label>
+                  <select
+                    value={newAnnouncement.priority}
+                    onChange={(e) => setNewAnnouncement(prev => ({ ...prev, priority: e.target.value }))}
+                    className="w-full px-3 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
+                  >
+                    <option value="normal">Normal</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 md:mb-2">
                     Schedule For (Optional)
                   </label>
                   <input
                     type="datetime-local"
                     value={newAnnouncement.scheduledFor}
                     onChange={(e) => setNewAnnouncement(prev => ({ ...prev, scheduledFor: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 md:mb-2">
                     Expires At (Optional)
                   </label>
                   <input
                     type="datetime-local"
                     value={newAnnouncement.expiresAt}
                     onChange={(e) => setNewAnnouncement(prev => ({ ...prev, expiresAt: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
                   />
                 </div>
               </div>
               <button
                 onClick={handleCreate}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg font-medium"
+                className="flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg font-medium text-sm md:text-base min-h-[48px] w-full sm:w-auto"
               >
-                <Send className="w-5 h-5" />
+                <Send className="w-4 h-4 md:w-5 md:h-5" />
                 Create Announcement
               </button>
             </div>
           </GlassCard>
 
           {/* Announcements List */}
-          <GlassCard className="p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Active Announcements</h2>
+          <GlassCard className="p-4 md:p-6">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6">Active Announcements</h2>
             
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               {announcements.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No announcements yet</p>
+                <p className="text-gray-500 text-center py-6 md:py-8 text-sm md:text-base">No announcements yet</p>
               ) : (
                 announcements.map(announcement => (
                   <div
                     key={announcement.id}
-                    className={`border rounded-xl p-4 transition-all ${
+                    className={`border rounded-xl p-3 md:p-4 transition-all min-h-[120px] md:min-h-[140px] ${
                       announcement.active 
                         ? 'border-blue-200 bg-blue-50/50' 
                         : 'border-gray-200 bg-gray-50/50 opacity-60'
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-semibold text-gray-900">{announcement.title}</h3>
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <h3 className="font-semibold text-gray-900 text-sm md:text-base truncate">{announcement.title}</h3>
+                          <span className={`px-2 py-1 rounded text-xs font-medium flex-shrink-0 ${
                             announcement.priority === 'urgent' ? 'bg-red-100 text-red-700' :
                             announcement.priority === 'high' ? 'bg-orange-100 text-orange-700' :
                             'bg-blue-100 text-blue-700'
                           }`}>
                             {announcement.priority}
                           </span>
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
+                          <span className={`px-2 py-1 rounded text-xs font-medium flex-shrink-0 ${
                             announcement.active 
                               ? 'bg-green-100 text-green-700' 
                               : 'bg-gray-100 text-gray-600'
@@ -294,24 +296,24 @@ export default function Announcements() {
                             {announcement.active ? 'Active' : 'Inactive'}
                           </span>
                         </div>
-                        <p className="text-gray-700 mb-2">{announcement.message}</p>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
-                          <span>
+                        <p className="text-gray-700 mb-2 text-sm md:text-base line-clamp-2">{announcement.message}</p>
+                        <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-gray-500">
+                          <span className="truncate">
                             {announcement.hostel ? `Hostel: ${announcement.hostel}` : 'All Hostels'}
                           </span>
-                          <span>
+                          <span className="truncate">
                             {announcement.gender ? `Gender: ${announcement.gender}` : 'All Genders'}
                           </span>
-                          <span>
+                          <span className="flex-shrink-0">
                             {new Date(announcement.createdAt).toLocaleDateString()}
                           </span>
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <button
                           onClick={() => toggleActive(announcement.id)}
-                          className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                          className={`px-3 py-2 rounded text-xs md:text-sm font-medium transition-colors min-h-[36px] md:min-h-[40px] ${
                             announcement.active
                               ? 'bg-orange-100 text-orange-700 hover:bg-orange-200'
                               : 'bg-green-100 text-green-700 hover:bg-green-200'
@@ -321,7 +323,7 @@ export default function Announcements() {
                         </button>
                         <button
                           onClick={() => handleDelete(announcement.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                          className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors min-h-[36px] min-w-[36px] md:min-h-[40px] md:min-w-[40px] flex items-center justify-center"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>

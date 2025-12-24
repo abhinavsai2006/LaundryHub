@@ -92,38 +92,38 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
-          <p className="text-gray-600">Quick operational overview</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 pb-20 md:pb-0">
+      <div className="container mx-auto px-3 sm:px-4 py-4 md:py-8">
+        <div className="mb-4 md:mb-8">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 md:mb-2">Admin Dashboard</h1>
+          <p className="text-sm md:text-base text-gray-600">Quick operational overview</p>
         </div>
 
         {/* Date Selector */}
-        <GlassCard className="p-6 mb-6">
-          <div className="flex items-center gap-4">
-            <label htmlFor="date" className="text-sm font-medium text-gray-700">Select Date:</label>
+        <GlassCard className="p-3 md:p-4 lg:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4">
+            <label htmlFor="date" className="text-sm font-medium text-gray-700 min-w-fit">Select Date:</label>
             <input
               type="date"
               id="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base min-h-[44px]"
             />
           </div>
         </GlassCard>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6 mb-4 md:mb-6 lg:mb-8">
           {kpiCards.map((card, index) => (
-            <GlassCard key={index} className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">{card.label}</p>
-                  <p className="text-3xl font-bold text-gray-900">{card.value}</p>
+            <GlassCard key={index} className="p-3 md:p-4 lg:p-6">
+              <div className="flex items-center justify-between gap-2 md:gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs md:text-sm text-gray-600 mb-1 truncate">{card.label}</p>
+                  <p className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">{card.value}</p>
                 </div>
-                <div className={`p-4 ${card.bgColor} rounded-xl`}>
-                  <card.icon className={`w-8 h-8 ${card.textColor}`} />
+                <div className={`p-2 md:p-3 lg:p-4 ${card.bgColor} rounded-lg md:rounded-xl flex-shrink-0`}>
+                  <card.icon className={`w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 ${card.textColor}`} />
                 </div>
               </div>
             </GlassCard>
@@ -131,33 +131,33 @@ export default function AdminDashboard() {
         </div>
 
         {/* Hostel-wise Summary */}
-        <GlassCard className="p-6 mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Hostel-wise Summary</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">MH Hostel</h3>
-              <p className="text-3xl font-bold text-blue-600">{mhOrders.length}</p>
-              <p className="text-sm text-gray-600">Orders Today</p>
+        <GlassCard className="p-3 md:p-4 lg:p-6 mb-4 md:mb-6 lg:mb-8">
+          <h2 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 md:mb-4 lg:mb-6">Hostel-wise Summary</h2>
+          <div className="grid grid-cols-2 gap-3 md:gap-4 lg:gap-6">
+            <div className="text-center p-3 md:p-4 bg-blue-50 rounded-lg md:rounded-xl">
+              <h3 className="text-sm md:text-base lg:text-lg font-semibold text-gray-900 mb-1 md:mb-2">MH Hostel</h3>
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-blue-600">{mhOrders.length}</p>
+              <p className="text-xs md:text-sm text-gray-600">Orders Today</p>
             </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">LH Hostel</h3>
-              <p className="text-3xl font-bold text-green-600">{lhOrders.length}</p>
-              <p className="text-sm text-gray-600">Orders Today</p>
+            <div className="text-center p-3 md:p-4 bg-green-50 rounded-lg md:rounded-xl">
+              <h3 className="text-sm md:text-base lg:text-lg font-semibold text-gray-900 mb-1 md:mb-2">LH Hostel</h3>
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-green-600">{lhOrders.length}</p>
+              <p className="text-xs md:text-sm text-gray-600">Orders Today</p>
             </div>
           </div>
         </GlassCard>
 
         {/* Alerts Panel */}
-        <GlassCard className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Bell className="w-5 h-5 text-red-600" />
+        <GlassCard className="p-3 md:p-4 lg:p-6">
+          <h2 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
+            <Bell className="w-4 h-4 md:w-5 md:h-5 text-red-600" />
             Alerts
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-2 md:space-y-3">
             {alerts.map((alert, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 bg-white/50 rounded-lg">
-                <alert.icon className={`w-5 h-5 ${alert.color}`} />
-                <span className="text-sm text-gray-700">{alert.message}</span>
+              <div key={index} className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-white/50 rounded-lg md:rounded-xl min-h-[44px]">
+                <alert.icon className={`w-4 h-4 md:w-5 md:h-5 ${alert.color} flex-shrink-0`} />
+                <span className="text-xs md:text-sm text-gray-700 truncate">{alert.message}</span>
               </div>
             ))}
           </div>

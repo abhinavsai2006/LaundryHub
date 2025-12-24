@@ -51,41 +51,41 @@ export default function AddLostItem() {
 
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <button
               onClick={() => navigate('/operator/lost-found')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
-              <ArrowLeft className="w-6 h-6 text-gray-600" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <div className="flex items-center gap-3">
-              <Package className="w-6 h-6 text-blue-600" />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              <Package className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 flex-shrink-0" />
+              <div className="min-w-0 flex-1">
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 truncate">
                   Add Found Item
                 </h1>
-                <p className="text-gray-600">Add an item that was found to the lost & found</p>
+                <p className="text-xs sm:text-sm text-gray-600">Add an item that was found to the lost & found</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         <div className="max-w-2xl mx-auto">
-          <GlassCard className="p-8">
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Plus className="w-8 h-8 text-blue-600" />
+          <GlassCard className="p-4 sm:p-6 lg:p-8">
+            <div className="text-center mb-6 sm:mb-8">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Plus className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Add Found Item</h2>
-              <p className="text-gray-600">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Add Found Item</h2>
+              <p className="text-sm sm:text-base text-gray-600">
                 Enter details about the item that was found so students can claim it.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Item Description *
@@ -95,17 +95,17 @@ export default function AddLostItem() {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Describe the found item in detail (e.g., 'Blue backpack with student ID inside', 'White sneakers size 8', 'Black wallet with cash')"
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm sm:text-base min-h-[44px]"
                   required
                 />
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-xs sm:text-sm text-gray-500 mt-2">
                   Include any identifying features, contents, or distinguishing marks.
                 </p>
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="font-medium text-blue-900 mb-2">Important Notes:</h3>
-                <ul className="text-sm text-blue-800 space-y-1">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
+                <h3 className="font-medium text-blue-900 mb-2 text-sm sm:text-base">Important Notes:</h3>
+                <ul className="text-xs sm:text-sm text-blue-800 space-y-1">
                   <li>• Item will be marked as "found" and visible to all students</li>
                   <li>• Students can search and claim items that match their description</li>
                   <li>• You'll be notified when a student claims this item</li>
@@ -113,18 +113,18 @@ export default function AddLostItem() {
                 </ul>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button
                   type="button"
                   onClick={() => navigate('/operator/lost-found')}
-                  className="flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                  className="w-full sm:flex-1 px-4 sm:px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium min-h-[44px] flex items-center justify-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting || !description.trim()}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                  className="w-full sm:flex-1 px-4 sm:px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium min-h-[44px] flex items-center justify-center"
                 >
                   {isSubmitting ? 'Adding...' : 'Add Item'}
                 </button>

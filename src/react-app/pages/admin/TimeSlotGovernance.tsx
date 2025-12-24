@@ -84,55 +84,59 @@ export default function TimeSlotGovernance() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-            <Clock className="w-8 h-8 text-green-600" />
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+            <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
             Time & Slot Governance
           </h1>
-          <p className="text-gray-600">Configure collection windows and capacity limits</p>
+          <p className="text-sm sm:text-base text-gray-600">Configure collection windows and capacity limits</p>
         </div>
 
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <select
-              value={selectedHostel}
-              onChange={(e) => setSelectedHostel(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            >
-              <option value="all">All Hostels</option>
-              <option value="MH-A">MH-A</option>
-              <option value="MH-B">MH-B</option>
-              <option value="LH-A">LH-A</option>
-            </select>
-            <button
-              onClick={addTimeSlot}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-            >
-              Add Time Slot
-            </button>
+        <div className="mb-4 sm:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <select
+                value={selectedHostel}
+                onChange={(e) => setSelectedHostel(e.target.value)}
+                className="px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base min-h-[44px]"
+              >
+                <option value="all">All Hostels</option>
+                <option value="MH-A">MH-A</option>
+                <option value="MH-B">MH-B</option>
+                <option value="LH-A">LH-A</option>
+              </select>
+              <button
+                onClick={addTimeSlot}
+                className="px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium min-h-[44px] w-full sm:w-auto"
+              >
+                Add Time Slot
+              </button>
+            </div>
+            <div className="flex justify-end sm:ml-auto">
+              <button
+                onClick={() => setShowSettings(!showSettings)}
+                className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 min-h-[44px] w-full sm:w-auto"
+              >
+                <Settings className="w-4 h-4" />
+                <span className="text-sm sm:text-base">System Settings</span>
+              </button>
+            </div>
           </div>
-          <button
-            onClick={() => setShowSettings(!showSettings)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-          >
-            <Settings className="w-4 h-4" />
-            System Settings
-          </button>
         </div>
 
         {/* System Settings Panel */}
         {showSettings && (
-          <GlassCard className="p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">System Settings</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <GlassCard className="p-4 sm:p-6 mb-4 sm:mb-6">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">System Settings</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               <div>
-                <label className="flex items-center gap-2 mb-2">
+                <label className="flex items-center gap-2 mb-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={settings.lateSubmissionAcceptance}
                     onChange={(e) => setSettings(prev => ({ ...prev, lateSubmissionAcceptance: e.target.checked }))}
-                    className="rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                   />
                   <span className="text-sm font-medium text-gray-700">Accept Late Submissions</span>
                 </label>
@@ -141,19 +145,19 @@ export default function TimeSlotGovernance() {
                     type="number"
                     value={settings.lateSubmissionGraceHours}
                     onChange={(e) => setSettings(prev => ({ ...prev, lateSubmissionGraceHours: parseInt(e.target.value) }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                     placeholder="Grace hours"
                   />
                 )}
               </div>
 
               <div>
-                <label className="flex items-center gap-2 mb-2">
+                <label className="flex items-center gap-2 mb-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={settings.autoCloseAfterCutoff}
                     onChange={(e) => setSettings(prev => ({ ...prev, autoCloseAfterCutoff: e.target.checked }))}
-                    className="rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                   />
                   <span className="text-sm font-medium text-gray-700">Auto-close After Cutoff</span>
                 </label>
@@ -162,7 +166,7 @@ export default function TimeSlotGovernance() {
                     type="time"
                     value={settings.cutoffTime}
                     onChange={(e) => setSettings(prev => ({ ...prev, cutoffTime: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                   />
                 )}
               </div>
@@ -173,7 +177,7 @@ export default function TimeSlotGovernance() {
                   type="number"
                   value={settings.maxClothesPerCycle}
                   onChange={(e) => setSettings(prev => ({ ...prev, maxClothesPerCycle: parseInt(e.target.value) }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                 />
               </div>
 
@@ -183,73 +187,73 @@ export default function TimeSlotGovernance() {
                   type="number"
                   value={settings.maxWeeklySubmissions}
                   onChange={(e) => setSettings(prev => ({ ...prev, maxWeeklySubmissions: parseInt(e.target.value) }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                 />
               </div>
             </div>
 
-            <div className="mt-6 flex justify-end">
+            <div className="mt-4 sm:mt-6 flex justify-center sm:justify-end">
               <button
                 onClick={handleSettingsUpdate}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                className="w-full sm:w-auto px-6 py-4 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2 min-h-[48px]"
               >
                 <Save className="w-4 h-4" />
-                Save Settings
+                <span className="text-sm sm:text-base">Save Settings</span>
               </button>
             </div>
           </GlassCard>
         )}
 
         {/* Time Slots */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredSlots.map(slot => (
-            <GlassCard key={slot.id} className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="font-semibold text-gray-900">{slot.hostel} - {slot.dayOfWeek}</h3>
-                  <p className="text-sm text-gray-600">
+            <GlassCard key={slot.id} className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 sm:mb-4 gap-3">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{slot.hostel} - {slot.dayOfWeek}</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
                     {slot.startTime} - {slot.endTime}
                   </p>
                 </div>
-                <label className="flex items-center gap-2">
+                <label className="flex items-center gap-2 cursor-pointer self-start sm:self-center">
                   <input
                     type="checkbox"
                     checked={slot.isActive}
                     onChange={(e) => handleSlotUpdate(slot.id, { isActive: e.target.checked })}
-                    className="rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                   />
-                  <span className="text-sm text-gray-700">Active</span>
+                  <span className="text-xs sm:text-sm text-gray-700 whitespace-nowrap">Active</span>
                 </label>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Max Capacity</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Max Capacity</label>
                   <input
                     type="number"
                     value={slot.maxCapacity}
                     onChange={(e) => handleSlotUpdate(slot.id, { maxCapacity: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Start Time</label>
                     <input
                       type="time"
                       value={slot.startTime}
                       onChange={(e) => handleSlotUpdate(slot.id, { startTime: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">End Time</label>
                     <input
                       type="time"
                       value={slot.endTime}
                       onChange={(e) => handleSlotUpdate(slot.id, { endTime: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                     />
                   </div>
                 </div>

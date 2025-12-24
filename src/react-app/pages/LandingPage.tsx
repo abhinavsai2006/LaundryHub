@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '@/react-app/contexts/AuthContext';
+import ScrollReveal from '@/react-app/components/ScrollReveal';
 import {
   Shirt,
   Shield,
@@ -347,155 +348,161 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative z-10 pt-20 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <div className={`transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              {/* Trust Badge */}
-              <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 mb-8 shadow-lg border border-gray-200/50">
-                <Crown className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-medium text-gray-700">#1 College Laundry Platform</span>
-                <div className="flex -space-x-1 ml-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />
+          <ScrollReveal direction="up" delay={0}>
+            <div className="text-center">
+              <div className={`transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                {/* Trust Badge */}
+                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 mb-8 shadow-lg border border-gray-200/50">
+                  <Crown className="w-4 h-4 text-yellow-500" />
+                  <span className="text-sm font-medium text-gray-700">#1 College Laundry Platform</span>
+                  <div className="flex -space-x-1 ml-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                </div>
+
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                  <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+                    Laundry Done
+                  </span>
+                  <br />
+                  <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    Right
+                  </span>
+                </h1>
+
+                <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
+                  Experience the future of college laundry with AI-powered tracking, instant notifications,
+                  and seamless digital management. Join <strong className="text-blue-600">15,000+</strong> students
+                  who've transformed their laundry experience.
+                </p>
+
+                {/* Key Benefits */}
+                <div className="flex flex-wrap justify-center gap-6 mb-12 text-sm font-medium">
+                  <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>Save 3+ hours weekly</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>Never lose laundry again</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>24/7 tracking & support</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 flex items-center gap-3"
+                  >
+                    <Rocket className="w-6 h-6" />
+                    Start Free Today
+                    <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <button className="group border-2 border-gray-300 text-gray-700 px-10 py-4 rounded-2xl font-bold text-lg hover:border-blue-500 hover:text-blue-600 transition-all duration-300 flex items-center gap-3 hover:shadow-lg">
+                    <Play className="w-6 h-6" />
+                    Watch Demo
+                    <ChevronDown className="w-6 h-6 group-hover:translate-y-1 transition-transform" />
+                  </button>
+                </div>
+
+                {/* Enhanced Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
+                  {stats.map((stat, index) => (
+                    <ScrollReveal key={index} direction="up" delay={index * 100}>
+                      <div
+                        className={`bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-200/50 transition-all duration-1000 delay-${index * 100} hover:shadow-xl hover:scale-105`}
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <div className="flex justify-center mb-3">
+                          <stat.icon className="w-8 h-8 text-blue-600" />
+                        </div>
+                        <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-1">
+                          {stat.number}
+                        </div>
+                        <div className="text-gray-600 font-medium text-sm mb-1">{stat.label}</div>
+                        <div className="text-green-600 text-xs font-medium">{stat.trend}</div>
+                      </div>
+                    </ScrollReveal>
                   ))}
                 </div>
               </div>
-
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
-                  Laundry Done
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Right
-                </span>
-              </h1>
-
-              <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-                Experience the future of college laundry with AI-powered tracking, instant notifications,
-                and seamless digital management. Join <strong className="text-blue-600">15,000+</strong> students
-                who've transformed their laundry experience.
-              </p>
-
-              {/* Key Benefits */}
-              <div className="flex flex-wrap justify-center gap-6 mb-12 text-sm font-medium">
-                <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Save 3+ hours weekly</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Never lose laundry again</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>24/7 tracking & support</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-                <button
-                  onClick={() => navigate('/login')}
-                  className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 flex items-center gap-3"
-                >
-                  <Rocket className="w-6 h-6" />
-                  Start Free Today
-                  <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                <button className="group border-2 border-gray-300 text-gray-700 px-10 py-4 rounded-2xl font-bold text-lg hover:border-blue-500 hover:text-blue-600 transition-all duration-300 flex items-center gap-3 hover:shadow-lg">
-                  <Play className="w-6 h-6" />
-                  Watch Demo
-                  <ChevronDown className="w-6 h-6 group-hover:translate-y-1 transition-transform" />
-                </button>
-              </div>
-
-              {/* Enhanced Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
-                {stats.map((stat, index) => (
-                  <div
-                    key={index}
-                    className={`bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-200/50 transition-all duration-1000 delay-${index * 100} hover:shadow-xl hover:scale-105`}
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <div className="flex justify-center mb-3">
-                      <stat.icon className="w-8 h-8 text-blue-600" />
-                    </div>
-                    <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-1">
-                      {stat.number}
-                    </div>
-                    <div className="text-gray-600 font-medium text-sm mb-1">{stat.label}</div>
-                    <div className="text-green-600 text-xs font-medium">{stat.trend}</div>
-                  </div>
-                ))}
-              </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Features Section */}
       <section id="features" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <Sparkles className="w-4 h-4" />
-              Powerful Features
+          <ScrollReveal direction="up" delay={200}>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <Sparkles className="w-4 h-4" />
+                Powerful Features
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                Everything You Need for
+                <br />
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Modern Laundry Management
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Advanced technology meets user-friendly design to create the ultimate laundry experience
+              </p>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-              Everything You Need for
-              <br />
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Modern Laundry Management
-              </span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Advanced technology meets user-friendly design to create the ultimate laundry experience
-            </p>
-          </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div
-                key={index}
-                className={`group bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-gray-200/50 hover:border-blue-200/50 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="relative mb-6">
-                  <div className={`bg-gradient-to-r ${feature.color} p-4 rounded-2xl w-fit group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <feature.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div className={`absolute -top-2 -right-2 bg-gradient-to-r ${feature.color} text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg`}>
-                    {feature.stats}
-                  </div>
-                </div>
-
-                <h3 className="text-2xl font-bold mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">{feature.title}</h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
-
-                {/* Benefits */}
-                <div className="space-y-2 mb-6">
-                  {feature.benefits.map((benefit, benefitIndex) => (
-                    <div key={benefitIndex} className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-gray-700">{benefit}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => setExpandedFeature(expandedFeature === index ? null : index)}
-                  className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group-hover:scale-105 transform duration-200"
+              <ScrollReveal key={index} direction="up" delay={300 + index * 100}>
+                <div
+                  className={`group bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-gray-200/50 hover:border-blue-200/50 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  style={{ animationDelay: `${index * 150}ms` }}
                 >
-                  Learn More
-                  {expandedFeature === index ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </button>
-
-                {expandedFeature === index && (
-                  <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200/50">
-                    <p className="text-gray-700 leading-relaxed">{feature.details}</p>
+                  <div className="relative mb-6">
+                    <div className={`bg-gradient-to-r ${feature.color} p-4 rounded-2xl w-fit group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      <feature.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <div className={`absolute -top-2 -right-2 bg-gradient-to-r ${feature.color} text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg`}>
+                      {feature.stats}
+                    </div>
                   </div>
-                )}
-              </div>
+
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">{feature.title}</h3>
+                  <p className="text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
+
+                  {/* Benefits */}
+                  <div className="space-y-2 mb-6">
+                    {feature.benefits.map((benefit, benefitIndex) => (
+                      <div key={benefitIndex} className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                        <span className="text-gray-700">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => setExpandedFeature(expandedFeature === index ? null : index)}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group-hover:scale-105 transform duration-200"
+                  >
+                    Learn More
+                    {expandedFeature === index ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+
+                  {expandedFeature === index && (
+                    <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200/50">
+                      <p className="text-gray-700 leading-relaxed">{feature.details}</p>
+                    </div>
+                  )}
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -586,64 +593,67 @@ export default function LandingPage() {
       {/* User Roles Section */}
       <section id="roles" className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-              User Roles & Permissions
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Tailored experiences for every member of your campus community
-            </p>
-          </div>
+          <ScrollReveal direction="up" delay={800}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                User Roles & Permissions
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Tailored experiences for every member of your campus community
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-8">
             {userRoles.map((userRole, index) => (
-              <div
-                key={index}
-                className={`bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-gray-200/50 hover:border-blue-200/50 relative overflow-hidden ${
-                  mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                {/* Background Pattern */}
-                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${userRole.bgColor} rounded-full -mr-16 -mt-16 opacity-20`}></div>
-
-                <div className={`bg-gradient-to-r ${userRole.color} p-4 rounded-2xl w-fit mb-6 relative z-10 shadow-lg`}>
-                  <userRole.icon className="w-10 h-10 text-white" />
-                </div>
-
-                <h3 className="text-3xl font-bold mb-2 text-gray-900 relative z-10">{userRole.role}</h3>
-                <p className="text-blue-600 font-medium mb-6 relative z-10">{userRole.tagline}</p>
-
-                {/* Stats */}
-                <div className="flex justify-between items-center mb-6 p-3 bg-gray-50 rounded-xl relative z-10">
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-gray-900">{userRole.stats.users}</div>
-                    <div className="text-xs text-gray-600">Active Users</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-gray-900">{userRole.stats.satisfaction || userRole.stats.efficiency || userRole.stats.savings}</div>
-                    <div className="text-xs text-gray-600">
-                      {userRole.stats.satisfaction ? 'Satisfaction' : userRole.stats.efficiency ? 'Efficiency' : 'Savings'}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3 mb-8 relative z-10">
-                  {userRole.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-gray-700 text-sm">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => navigate('/login')}
-                  className={`w-full bg-gradient-to-r ${userRole.color} text-white py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 relative z-10 shadow-lg`}
+              <ScrollReveal key={index} direction="up" delay={900 + index * 100}>
+                <div
+                  className={`bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-gray-200/50 hover:border-blue-200/50 relative overflow-hidden ${
+                    mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ animationDelay: `${index * 200}ms` }}
                 >
-                  Access as {userRole.role}
-                </button>
-              </div>
+                  {/* Background Pattern */}
+                  <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${userRole.bgColor} rounded-full -mr-16 -mt-16 opacity-20`}></div>
+
+                  <div className={`bg-gradient-to-r ${userRole.color} p-4 rounded-2xl w-fit mb-6 relative z-10 shadow-lg`}>
+                    <userRole.icon className="w-10 h-10 text-white" />
+                  </div>
+
+                  <h3 className="text-3xl font-bold mb-2 text-gray-900 relative z-10">{userRole.role}</h3>
+                  <p className="text-blue-600 font-medium mb-6 relative z-10">{userRole.tagline}</p>
+
+                  {/* Stats */}
+                  <div className="flex justify-between items-center mb-6 p-3 bg-gray-50 rounded-xl relative z-10">
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-gray-900">{userRole.stats.users}</div>
+                      <div className="text-xs text-gray-600">Active Users</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-gray-900">{userRole.stats.satisfaction || userRole.stats.efficiency || userRole.stats.savings}</div>
+                      <div className="text-xs text-gray-600">
+                        {userRole.stats.satisfaction ? 'Satisfaction' : userRole.stats.efficiency ? 'Efficiency' : 'Savings'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 mb-8 relative z-10">
+                    {userRole.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                        <span className="text-gray-700 text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => navigate('/login')}
+                    className={`w-full bg-gradient-to-r ${userRole.color} text-white py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 relative z-10 shadow-lg`}
+                  >
+                    Access as {userRole.role}
+                  </button>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -652,14 +662,16 @@ export default function LandingPage() {
       {/* How It Works Section */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-              How It Works
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Simple, streamlined process from submission to pickup
-            </p>
-          </div>
+          <ScrollReveal direction="up" delay={1000}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                How It Works
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Simple, streamlined process from submission to pickup
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
@@ -688,29 +700,30 @@ export default function LandingPage() {
                 icon: CheckCircle
               }
             ].map((step, index) => (
-              <div
-                key={index}
-                className={`text-center ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="relative mb-8">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-2xl font-bold w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    {step.step}
+              <ScrollReveal key={index} direction="up" delay={1100 + index * 100}>
+                <div
+                  className={`text-center ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  <div className="relative mb-8">
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-2xl font-bold w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      {step.step}
+                    </div>
+                    {index < 3 && (
+                      <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-blue-300 to-purple-300 transform -translate-x-8"></div>
+                    )}
                   </div>
-                  {index < 3 && (
-                    <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-blue-300 to-purple-300 transform -translate-x-8"></div>
-                  )}
-                </div>
 
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-1 rounded-2xl mb-6">
-                  <div className="bg-white p-4 rounded-xl">
-                    <step.icon className="w-8 h-8 text-blue-600 mx-auto" />
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-1 rounded-2xl mb-6">
+                    <div className="bg-white p-4 rounded-xl">
+                      <step.icon className="w-8 h-8 text-blue-600 mx-auto" />
+                    </div>
                   </div>
-                </div>
 
-                <h3 className="text-2xl font-bold mb-4 text-gray-900">{step.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
-              </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -726,95 +739,100 @@ export default function LandingPage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <MessageSquare className="w-4 h-4" />
-              Success Stories
+          <ScrollReveal direction="up" delay={400}>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <MessageSquare className="w-4 h-4" />
+                Success Stories
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                What Our Community Says
+              </h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                Real experiences from students, operators, and administrators transforming their laundry experience
+              </p>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              What Our Community Says
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Real experiences from students, operators, and administrators transforming their laundry experience
-            </p>
-          </div>
+          </ScrollReveal>
 
           {/* Featured Testimonial */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl">
-              <div className="text-center mb-8">
-                <div className="flex justify-center mb-4">
-                  {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
-                    <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <blockquote className="text-2xl md:text-3xl text-white font-light leading-relaxed italic mb-8">
-                  "{testimonials[activeTestimonial].content}"
-                </blockquote>
-              </div>
-
-              <div className="flex flex-col md:flex-row items-center justify-between">
-                <div className="flex items-center gap-4 mb-4 md:mb-0">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-xl">
-                      {testimonials[activeTestimonial].avatar}
-                    </span>
+          <ScrollReveal direction="up" delay={500}>
+            <div className="max-w-4xl mx-auto mb-12">
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl">
+                <div className="text-center mb-8">
+                  <div className="flex justify-center mb-4">
+                    {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
+                      <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
+                    ))}
                   </div>
-                  <div>
-                    <h4 className="text-white font-semibold text-lg">{testimonials[activeTestimonial].name}</h4>
-                    <p className="text-gray-300">{testimonials[activeTestimonial].role}</p>
-                    <p className="text-blue-300 text-sm font-medium">{testimonials[activeTestimonial].highlight}</p>
-                  </div>
+                  <blockquote className="text-2xl md:text-3xl text-white font-light leading-relaxed italic mb-8">
+                    "{testimonials[activeTestimonial].content}"
+                  </blockquote>
                 </div>
 
-                {/* Testimonial Navigation */}
-                <div className="flex items-center gap-2">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveTestimonial(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        index === activeTestimonial ? 'bg-blue-500 scale-125' : 'bg-white/30 hover:bg-white/50'
-                      }`}
-                    />
-                  ))}
+                <div className="flex flex-col md:flex-row items-center justify-between">
+                  <div className="flex items-center gap-4 mb-4 md:mb-0">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                      <span className="text-white font-bold text-xl">
+                        {testimonials[activeTestimonial].avatar}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold text-lg">{testimonials[activeTestimonial].name}</h4>
+                      <p className="text-gray-300">{testimonials[activeTestimonial].role}</p>
+                      <p className="text-blue-300 text-sm font-medium">{testimonials[activeTestimonial].highlight}</p>
+                    </div>
+                  </div>
+
+                  {/* Testimonial Navigation */}
+                  <div className="flex items-center gap-2">
+                    {testimonials.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setActiveTestimonial(index)}
+                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                          index === activeTestimonial ? 'bg-blue-500 scale-125' : 'bg-white/30 hover:bg-white/50'
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Additional Testimonials Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.slice(0, 4).map((testimonial, index) => (
-              <div
-                key={index}
-                className={`bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 cursor-pointer ${
-                  index === activeTestimonial % 4 ? 'ring-2 ring-blue-400' : ''
-                }`}
-                onClick={() => setActiveTestimonial(index)}
-              >
-                <div className="flex mb-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-
-                <p className="text-white text-sm mb-4 leading-relaxed line-clamp-3">
-                  "{testimonial.content}"
-                </p>
-
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-xs">
-                      {testimonial.avatar}
-                    </span>
+              <ScrollReveal key={index} direction="up" delay={600 + index * 100}>
+                <div
+                  className={`bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 cursor-pointer ${
+                    index === activeTestimonial % 4 ? 'ring-2 ring-blue-400' : ''
+                  }`}
+                  onClick={() => setActiveTestimonial(index)}
+                >
+                  <div className="flex mb-3">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                    ))}
                   </div>
-                  <div>
-                    <h5 className="text-white font-medium text-sm">{testimonial.name}</h5>
-                    <p className="text-gray-400 text-xs">{testimonial.role}</p>
+
+                  <p className="text-white text-sm mb-4 leading-relaxed line-clamp-3">
+                    "{testimonial.content}"
+                  </p>
+
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-xs">
+                        {testimonial.avatar}
+                      </span>
+                    </div>
+                    <div>
+                      <h5 className="text-white font-medium text-sm">{testimonial.name}</h5>
+                      <p className="text-gray-400 text-xs">{testimonial.role}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -829,72 +847,74 @@ export default function LandingPage() {
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/10 rounded-full blur-xl"></div>
         </div>
 
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="mb-8">
-            <Crown className="w-16 h-16 text-yellow-300 mx-auto mb-4" />
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Ready to Transform Your
-              <br />
-              <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                Laundry Experience?
-              </span>
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Join <strong>15,000+</strong> students who've revolutionized their laundry routine.
-              Start your free trial today and experience the future of college laundry management.
-            </p>
-          </div>
+        <ScrollReveal direction="up" delay={700}>
+          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="mb-8">
+              <Crown className="w-16 h-16 text-yellow-300 mx-auto mb-4" />
+              <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+                Ready to Transform Your
+                <br />
+                <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
+                  Laundry Experience?
+                </span>
+              </h2>
+              <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Join <strong>15,000+</strong> students who've revolutionized their laundry routine.
+                Start your free trial today and experience the future of college laundry management.
+              </p>
+            </div>
 
-          {/* Urgency Elements */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3">
-              <span className="text-white font-semibold">✨ Free 30-day trial</span>
+            {/* Urgency Elements */}
+            <div className="flex flex-wrap justify-center gap-4 mb-12">
+              <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3">
+                <span className="text-white font-semibold">✨ Free 30-day trial</span>
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3">
+                <span className="text-white font-semibold">🚀 Setup in 5 minutes</span>
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3">
+                <span className="text-white font-semibold">💎 Premium support included</span>
+              </div>
             </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3">
-              <span className="text-white font-semibold">🚀 Setup in 5 minutes</span>
+
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
+              <button
+                onClick={() => navigate('/login')}
+                className="bg-white text-blue-600 px-12 py-5 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-white/25 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3 group"
+              >
+                <Rocket className="w-7 h-7" />
+                Start Free Trial Now
+                <ArrowRight className="w-7 h-7 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <button className="border-2 border-white text-white px-12 py-5 rounded-2xl font-bold text-xl hover:bg-white hover:text-blue-600 transition-all duration-300 flex items-center justify-center gap-3 group">
+                <Play className="w-7 h-7" />
+                Watch Demo
+                <ChevronDown className="w-7 h-7 group-hover:translate-y-1 transition-transform" />
+              </button>
             </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3">
-              <span className="text-white font-semibold">💎 Premium support included</span>
+
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap justify-center items-center gap-8 text-blue-100">
+              <div className="flex items-center gap-2">
+                <Lock className="w-5 h-5" />
+                <span className="text-sm">Bank-level security</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-5 h-5" />
+                <span className="text-sm">GDPR compliant</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5" />
+                <span className="text-sm">99.9% uptime</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <HeadphonesIcon className="w-5 h-5" />
+                <span className="text-sm">24/7 support</span>
+              </div>
             </div>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-            <button
-              onClick={() => navigate('/login')}
-              className="bg-white text-blue-600 px-12 py-5 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-white/25 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3 group"
-            >
-              <Rocket className="w-7 h-7" />
-              Start Free Trial Now
-              <ArrowRight className="w-7 h-7 group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            <button className="border-2 border-white text-white px-12 py-5 rounded-2xl font-bold text-xl hover:bg-white hover:text-blue-600 transition-all duration-300 flex items-center justify-center gap-3 group">
-              <Play className="w-7 h-7" />
-              Watch Demo
-              <ChevronDown className="w-7 h-7 group-hover:translate-y-1 transition-transform" />
-            </button>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center items-center gap-8 text-blue-100">
-            <div className="flex items-center gap-2">
-              <Lock className="w-5 h-5" />
-              <span className="text-sm">Bank-level security</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5" />
-              <span className="text-sm">GDPR compliant</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5" />
-              <span className="text-sm">99.9% uptime</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <HeadphonesIcon className="w-5 h-5" />
-              <span className="text-sm">24/7 support</span>
-            </div>
-          </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Footer */}

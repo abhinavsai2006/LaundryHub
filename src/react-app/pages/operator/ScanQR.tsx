@@ -24,9 +24,20 @@ export default function ScanQR() {
   const [currentOrder, setCurrentOrder] = useState<LaundryItem | null>(null);
   const [selectedMachineId, setSelectedMachineId] = useState('');
   const [availableMachines, setAvailableMachines] = useState<Machine[]>([]);
+  const [quickAction, setQuickAction] = useState<string | null>(null);
   const { laundryItems, updateLaundryItem, machines, qrCodes } = useData();
   const { user } = useAuth();
   const { toasts, showToast, removeToast } = useToast();
+
+  // Check for quick action from URL params
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const action = urlParams.get('quickAction');
+    if (action) {
+      setQuickAction(action);
+      showToast(`Quick Action: ${action === 'wash' ? 'Scan & Wash' : action === 'ready' ? 'Scan & Ready' : 'Condition Check'}`, 'info');
+    }
+  }, [location.search, showToast]);
 
   // Check if we returned from camera scanner with scanned data
   useEffect(() => {
@@ -78,7 +89,7 @@ export default function ScanQR() {
         // Could add a button to redirect to assign QR page
         setTimeout(() => {
           if (window.confirm('This QR code is not assigned to any student. Would you like to assign it now?')) {
-            navigate('/operator/assign-qr', { state: { prefilledCode: code } });
+            navigate('/operator/assign', { state: { prefilledCode: code } });
           }
         }, 500);
       } else {
@@ -88,7 +99,7 @@ export default function ScanQR() {
       showToast('QR code not found in system. Would you like to add it?', 'info');
       setTimeout(() => {
         if (window.confirm('This QR code is not in the system. Would you like to add and assign it?')) {
-          navigate('/operator/assign-qr', { state: { prefilledCode: code } });
+          navigate('/operator/assign', { state: { prefilledCode: code } });
         }
       }, 500);
     }
@@ -116,16 +127,27 @@ export default function ScanQR() {
   const handleStatusUpdate = () => {
     if (!currentOrder) return;
 
-    const currentStatusIndex = statusFlow.findIndex(step => step.key === currentOrder.status);
-    const nextStatus = statusFlow[currentStatusIndex]?.next;
+    let targetStatus: LaundryStatus;
 
-    if (!nextStatus) {
-      showToast('Order is already completed', 'info');
-      return;
+    // Apply quick action if present
+    if (quickAction === 'wash') {
+      targetStatus = 'washing';
+    } else if (quickAction === 'ready') {
+      targetStatus = 'ready';
+    } else {
+      // Normal flow - get next status
+      const currentStatusIndex = statusFlow.findIndex(step => step.key === currentOrder.status);
+      const nextStatus = statusFlow[currentStatusIndex]?.next;
+
+      if (!nextStatus) {
+        showToast('Order is already completed', 'info');
+        return;
+      }
+      targetStatus = nextStatus as LaundryStatus;
     }
 
     const updateData: Partial<LaundryItem> = {
-      status: nextStatus as LaundryStatus,
+      status: targetStatus,
       operatorId: user?.id,
       operatorName: user?.name
     };
@@ -133,7 +155,7 @@ export default function ScanQR() {
     const now = new Date().toISOString();
 
     // Set timestamp for the new status
-    switch (nextStatus) {
+    switch (targetStatus) {
       case 'picked_up':
         updateData.pickedUpAt = now;
         break;
@@ -164,8 +186,11 @@ export default function ScanQR() {
     updateLaundryItem(currentOrder.id, updateData);
     setCurrentOrder({ ...currentOrder, ...updateData });
 
-    const nextStatusInfo = getNextStatusInfo();
-    showToast(`Status updated to ${nextStatusInfo?.label || 'Completed'}`, 'success');
+    const statusInfo = statusFlow.find(step => step.key === targetStatus);
+    showToast(`Status updated to ${statusInfo?.label || 'Completed'}`, 'success');
+
+    // Clear quick action after use
+    setQuickAction(null);
 
     // Reset for next scan
     setScannedCode('');
@@ -182,44 +207,44 @@ export default function ScanQR() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         <div className="max-w-2xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <QrCode className="w-8 h-8 text-blue-600" />
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+              <QrCode className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
               Scan QR Code
             </h1>
-            <p className="text-gray-600">Scan laundry bag QR to update status</p>
+            <p className="text-sm sm:text-base text-gray-600">Scan laundry bag QR to update status</p>
           </div>
 
-          <GlassCard className="p-6 mb-6">
-            <div className="space-y-6">
+          <GlassCard className="p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* QR Code Input */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   QR Code
                 </label>
-                <div className="flex flex-col sm:flex-row gap-2">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <input
                     type="text"
                     value={scannedCode}
                     onChange={(e) => setScannedCode(e.target.value)}
                     placeholder="Enter or scan QR code"
-                    className="w-full flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full flex-1 px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                   />
                   <button
                     onClick={handleOpenScanner}
-                    className="w-full sm:w-auto px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 min-h-[44px]"
                   >
-                    <Camera className="w-5 h-5" />
-                    Scan
+                    <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="text-sm sm:text-base">Scan</span>
                   </button>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                <div className="flex flex-col sm:flex-row gap-3 mt-3">
                   <button
                     onClick={handleManualScan}
                     disabled={!scannedCode.trim()}
-                    className="w-full sm:flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                    className="w-full sm:flex-1 px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-h-[44px]"
                   >
                     Process QR Code
                   </button>
@@ -230,21 +255,21 @@ export default function ScanQR() {
 
           {/* Order Details and Status Update */}
           {currentOrder && (
-            <GlassCard className="p-6">
-              <div className="space-y-6">
+            <GlassCard className="p-4 sm:p-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Details</h3>
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Order Details</h3>
 
                   {/* Student Information */}
-                  <div className="bg-blue-50 rounded-lg p-4 mb-4">
-                    <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-blue-50 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
-                        <p className="text-sm text-gray-600">Student Name</p>
-                        <p className="font-medium text-gray-900">{currentOrder.studentName}</p>
+                        <p className="text-xs sm:text-sm text-gray-600">Student Name</p>
+                        <p className="font-medium text-gray-900 text-sm sm:text-base">{currentOrder.studentName}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">Items</p>
-                        <p className="font-medium text-gray-900">
+                        <p className="text-xs sm:text-sm text-gray-600">Items</p>
+                        <p className="font-medium text-gray-900 text-sm sm:text-base">
                           {Array.isArray(currentOrder.items) ? currentOrder.items.join(', ') : currentOrder.items}
                         </p>
                       </div>
@@ -252,17 +277,17 @@ export default function ScanQR() {
                   </div>
 
                   {/* Status Information */}
-                  <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                    <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
-                        <p className="text-sm text-gray-600 mb-2">Current Status</p>
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2">Current Status</p>
                         <div className="flex items-center gap-2">
                           {currentStatusInfo && (
                             <>
-                              {CurrentIconComponent && <CurrentIconComponent className="w-5 h-5 text-blue-600" />}
-                              <div>
-                                <span className="font-medium text-gray-900">{currentStatusInfo.label}</span>
-                                <p className="text-xs text-gray-500">{currentStatusInfo.description}</p>
+                              {CurrentIconComponent && <CurrentIconComponent className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" />}
+                              <div className="min-w-0">
+                                <span className="font-medium text-gray-900 text-sm sm:text-base">{currentStatusInfo.label}</span>
+                                <p className="text-xs text-gray-500 truncate">{currentStatusInfo.description}</p>
                               </div>
                             </>
                           )}
@@ -270,18 +295,18 @@ export default function ScanQR() {
                       </div>
 
                       <div>
-                        <p className="text-sm text-gray-600 mb-2">Next Status</p>
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2">Next Status</p>
                         <div className="flex items-center gap-2">
                           {nextStatusInfo ? (
                             <>
-                              {NextIconComponent && <NextIconComponent className="w-5 h-5 text-green-600" />}
-                              <div>
-                                <span className="font-medium text-gray-900">{nextStatusInfo.label}</span>
-                                <p className="text-xs text-gray-500">{nextStatusInfo.description}</p>
+                              {NextIconComponent && <NextIconComponent className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 flex-shrink-0" />}
+                              <div className="min-w-0">
+                                <span className="font-medium text-gray-900 text-sm sm:text-base">{nextStatusInfo.label}</span>
+                                <p className="text-xs text-gray-500 truncate">{nextStatusInfo.description}</p>
                               </div>
                             </>
                           ) : (
-                            <span className="text-gray-500">Order Completed</span>
+                            <span className="text-gray-500 text-sm">Order Completed</span>
                           )}
                         </div>
                       </div>
@@ -297,7 +322,7 @@ export default function ScanQR() {
                       <select
                         value={selectedMachineId}
                         onChange={(e) => setSelectedMachineId(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                       >
                         <option value="">Select machine (optional)</option>
                         {availableMachines.map(machine => (
@@ -316,10 +341,10 @@ export default function ScanQR() {
                   {nextStatusInfo && (
                     <button
                       onClick={handleStatusUpdate}
-                      className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-green-700 transition-all shadow-lg flex items-center justify-center gap-2 font-medium"
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-green-700 transition-all shadow-lg flex items-center justify-center gap-2 font-medium min-h-[48px] text-base"
                     >
-                      <ArrowRight className="w-5 h-5" />
-                      Update to {nextStatusInfo.label}
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span>Update to {nextStatusInfo.label}</span>
                       {selectedMachineId && (
                         <span className="text-sm">
                           (with {machines.find(m => m.id === selectedMachineId)?.name})
@@ -329,9 +354,9 @@ export default function ScanQR() {
                   )}
 
                   {!nextStatusInfo && (
-                    <div className="text-center py-4">
-                      <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-2" />
-                      <p className="text-gray-600">This order has been completed and delivered.</p>
+                    <div className="text-center py-6 sm:py-8">
+                      <CheckCircle className="w-10 h-10 sm:w-12 sm:h-12 text-green-600 mx-auto mb-3" />
+                      <p className="text-sm sm:text-base text-gray-600">This order has been completed and delivered.</p>
                     </div>
                   )}
                 </div>

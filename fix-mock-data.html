@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Mock Data</title>
+</head>
+<body>
+    <h1>LaundryHub Mock Data Fix</h1>
+    <p>Click the button below to fix the mock data by recreating it with correct user IDs.</p>
+    <button id="fixButton">Fix Mock Data</button>
+    <div id="status"></div>
+
+    <script type="module">
+        import { createDemoAccounts } from './src/react-app/utils/createDemoAccounts.js';
+
+        document.getElementById('fixButton').addEventListener('click', async () => {
+            const status = document.getElementById('status');
+            status.textContent = 'Fixing mock data...';
+
+            try {
+                await createDemoAccounts(true, true); // createAccounts=true, forceRecreateMockData=true
+                status.textContent = '✅ Mock data fixed! Please refresh the LaundryHub page and login again.';
+            } catch (error) {
+                status.textContent = '❌ Error fixing mock data: ' + error.message;
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

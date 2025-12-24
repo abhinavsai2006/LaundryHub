@@ -135,71 +135,71 @@ export default function ManualReceipt() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 md:px-4 py-4 md:py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <Receipt className="w-8 h-8 text-teal-600" />
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+              <Receipt className="w-6 h-6 md:w-8 md:h-8 text-teal-600" />
               Manual Receipt Generation
             </h1>
-            <p className="text-gray-600">Generate and manage digital receipts for laundry services</p>
+            <p className="text-sm md:text-base text-gray-600">Generate and manage digital receipts for laundry services</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <GlassCard className="p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <Receipt className="w-5 h-5 text-teal-600" />
-                <p className="text-sm text-gray-600">Today's Receipts</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-4 md:mb-6">
+            <GlassCard className="p-4 md:p-6">
+              <div className="flex items-center gap-2 md:gap-3 mb-2">
+                <Receipt className="w-4 h-4 md:w-5 md:h-5 text-teal-600" />
+                <p className="text-xs md:text-sm text-gray-600">Today's Receipts</p>
               </div>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-2xl md:text-3xl font-bold text-gray-900">
                 {receipts.filter(r => new Date(r.generatedAt).toDateString() === new Date().toDateString()).length}
               </p>
             </GlassCard>
 
-            <GlassCard className="p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <CheckCircle className="w-5 h-5 text-green-600" />
-                <p className="text-sm text-gray-600">Total Receipts</p>
+            <GlassCard className="p-4 md:p-6">
+              <div className="flex items-center gap-2 md:gap-3 mb-2">
+                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
+                <p className="text-xs md:text-sm text-gray-600">Total Receipts</p>
               </div>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-2xl md:text-3xl font-bold text-gray-900">
                 {receipts.length}
               </p>
             </GlassCard>
 
-            <GlassCard className="p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <Download className="w-5 h-5 text-blue-600" />
-                <p className="text-sm text-gray-600">Available for Download</p>
+            <GlassCard className="p-4 md:p-6 sm:col-span-2 lg:col-span-1">
+              <div className="flex items-center gap-2 md:gap-3 mb-2">
+                <Download className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+                <p className="text-xs md:text-sm text-gray-600">Available for Download</p>
               </div>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-2xl md:text-3xl font-bold text-gray-900">
                 {receipts.length}
               </p>
             </GlassCard>
           </div>
 
           {/* Generate Receipt Section */}
-          <GlassCard className="p-6 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Generate New Receipt</h2>
+          <GlassCard className="p-4 md:p-6 mb-4 md:mb-6">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4">Generate New Receipt</h2>
 
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Search Laundry Item
                 </label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Search by student name or laundry ID..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    className="w-full pl-9 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   />
                 </div>
               </div>
 
               {searchTerm && (
-                <div className="max-h-40 overflow-y-auto border border-gray-200 rounded-lg mb-4">
+                <div className="max-h-32 md:max-h-40 overflow-y-auto border border-gray-200 rounded-lg mb-3 md:mb-4">
                   {filteredLaundry.slice(0, 5).map(item => (
                     <button
                       key={item.id}
@@ -207,17 +207,17 @@ export default function ManualReceipt() {
                         setSelectedLaundry(item.id);
                         setSearchTerm(item.studentName || item.id);
                       }}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                      className="w-full text-left px-3 md:px-4 py-2 md:py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 min-h-[44px]"
                     >
-                      <p className="font-medium text-gray-900">{item.studentName || 'Unknown'}</p>
-                      <p className="text-sm text-gray-600">ID: {item.id}</p>
+                      <p className="font-medium text-gray-900 text-sm md:text-base">{item.studentName || 'Unknown'}</p>
+                      <p className="text-xs md:text-sm text-gray-600">ID: {item.id}</p>
                     </button>
                   ))}
                 </div>
               )}
 
               {selectedLaundry && (
-                <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4">
+                <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 md:p-4 mb-3 md:mb-4">
                   <p className="text-sm text-teal-800">
                     <strong>Selected Item:</strong> {laundryItems.find(item => item.id === selectedLaundry)?.studentName || 'Unknown'}
                   </p>
@@ -228,55 +228,55 @@ export default function ManualReceipt() {
               <button
                 onClick={generateReceipt}
                 disabled={!selectedLaundry}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-xl hover:from-teal-700 hover:to-teal-800 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-xl hover:from-teal-700 hover:to-teal-800 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base min-h-[44px] w-full md:w-auto"
               >
-                <Receipt className="w-5 h-5" />
+                <Receipt className="w-4 h-4 md:w-5 md:h-5" />
                 Generate Receipt
               </button>
             </div>
           </GlassCard>
 
           {/* Receipt History */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-bold text-gray-900">Receipt History</h2>
+          <div className="space-y-3 md:space-y-4">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900">Receipt History</h2>
 
             {receipts.map(receipt => (
-              <GlassCard key={receipt.id} className="p-6">
-                <div className="flex items-center justify-between gap-4">
+              <GlassCard key={receipt.id} className="p-4 md:p-6">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <Receipt className="w-5 h-5 text-teal-600" />
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{receipt.studentName}</h3>
-                        <p className="text-sm text-gray-600">
+                    <div className="flex items-center gap-2 md:gap-3 mb-3">
+                      <Receipt className="w-4 h-4 md:w-5 md:h-5 text-teal-600" />
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-semibold text-gray-900 text-sm md:text-base truncate">{receipt.studentName}</h3>
+                        <p className="text-xs md:text-sm text-gray-600 truncate">
                           Generated by {receipt.operatorName} • {new Date(receipt.generatedAt).toLocaleString()}
                         </p>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 text-xs md:text-sm">
                       <div>
-                        <p className="text-gray-500">Receipt ID</p>
-                        <p className="text-gray-900 font-mono">{receipt.id}</p>
+                        <p className="text-gray-500 mb-1">Receipt ID</p>
+                        <p className="text-gray-900 font-mono break-all">{receipt.id}</p>
                       </div>
                       <div>
-                        <p className="text-gray-500">QR ID</p>
-                        <p className="text-gray-900 font-mono">{receipt.qrId}</p>
+                        <p className="text-gray-500 mb-1">QR ID</p>
+                        <p className="text-gray-900 font-mono break-all">{receipt.qrId}</p>
                       </div>
                       <div>
-                        <p className="text-gray-500">Pickup Time</p>
+                        <p className="text-gray-500 mb-1">Pickup Time</p>
                         <p className="text-gray-900">{new Date(receipt.pickupTime).toLocaleString()}</p>
                       </div>
                       <div>
-                        <p className="text-gray-500">Laundry ID</p>
-                        <p className="text-gray-900 font-mono">{receipt.laundryId}</p>
+                        <p className="text-gray-500 mb-1">Laundry ID</p>
+                        <p className="text-gray-900 font-mono break-all">{receipt.laundryId}</p>
                       </div>
                     </div>
                   </div>
 
                   <button
                     onClick={() => downloadReceipt(receipt)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-md"
+                    className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-md text-sm md:text-base min-h-[44px] w-full lg:w-auto"
                   >
                     <Download className="w-4 h-4" />
                     Download
@@ -287,10 +287,10 @@ export default function ManualReceipt() {
           </div>
 
           {receipts.length === 0 && (
-            <GlassCard className="p-12 text-center">
-              <Receipt className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Receipts Generated</h3>
-              <p className="text-gray-600">Generated receipts will appear here.</p>
+            <GlassCard className="p-8 md:p-12 text-center">
+              <Receipt className="w-12 h-12 md:w-16 md:h-16 text-gray-300 mx-auto mb-3 md:mb-4" />
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">No Receipts Generated</h3>
+              <p className="text-sm md:text-base text-gray-600">Generated receipts will appear here.</p>
             </GlassCard>
           )}
         </div>

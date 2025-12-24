@@ -109,14 +109,14 @@ export default function LostFoundDetails() {
 
   if (!selectedItem) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-600 mb-2">Item Not Found</h2>
-          <p className="text-gray-500 mb-4">The requested lost item could not be found.</p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center p-4">
+        <div className="text-center max-w-sm mx-auto">
+          <Package className="w-12 h-12 md:w-16 md:h-16 text-gray-300 mx-auto mb-4" />
+          <h2 className="text-lg md:text-xl font-semibold text-gray-600 mb-2">Item Not Found</h2>
+          <p className="text-sm md:text-base text-gray-500 mb-4">The requested lost item could not be found.</p>
           <button
             onClick={handleBack}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm md:text-base min-h-[44px]"
           >
             Back to Lost & Found
           </button>
@@ -131,66 +131,70 @@ export default function LostFoundDetails() {
 
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
               <button
                 onClick={handleBack}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center flex-shrink-0"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
               </button>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-100 rounded-md">
-                  <Package className="w-6 h-6 text-orange-600" />
+              <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                <div className="p-1.5 md:p-2 bg-orange-100 rounded-md flex-shrink-0">
+                  <Package className="w-4 h-4 md:w-6 md:h-6 text-orange-600" />
                 </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Lost Item Details</h1>
-                  <p className="text-gray-600">{selectedItem.description}</p>
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-lg md:text-2xl font-bold text-gray-900 truncate">Lost Item Details</h1>
+                  <p className="text-xs md:text-sm text-gray-600 truncate">{selectedItem.description}</p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border ${getStatusColor(selectedItem.status)}`}>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+              <div className={`inline-flex items-center justify-center gap-1 md:gap-2 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium border flex-shrink-0 ${getStatusColor(selectedItem.status)}`}>
                 <span className="capitalize">{selectedItem.status}</span>
               </div>
+
               {selectedItem.status === 'reported' && (
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleApproval(true)}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                    className="px-3 md:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-1 md:gap-2 text-sm min-h-[44px] flex-1 sm:flex-initial"
                   >
-                    <CheckCircle className="w-4 h-4" />
-                    Approve
+                    <CheckCircle className="w-3 h-3 md:w-4 md:h-4" />
+                    <span className="hidden xs:inline">Approve</span>
                   </button>
                   <button
                     onClick={() => handleApproval(false)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2"
+                    className="px-3 md:px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center justify-center gap-1 md:gap-2 text-sm min-h-[44px] flex-1 sm:flex-initial"
                   >
-                    <XCircle className="w-4 h-4" />
-                    Reject
+                    <XCircle className="w-3 h-3 md:w-4 md:h-4" />
+                    <span className="hidden xs:inline">Reject</span>
                   </button>
                 </div>
               )}
+
               {selectedItem.status === 'approved' && (
                 <button
                   onClick={handleReturn}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                  className="px-3 md:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-1 md:gap-2 text-sm min-h-[44px]"
                 >
-                  <CheckCircle className="w-4 h-4" />
-                  Mark Returned
+                  <CheckCircle className="w-3 h-3 md:w-4 md:h-4" />
+                  <span className="hidden xs:inline">Mark Returned</span>
                 </button>
               )}
+
               <button
                 onClick={toggleVisibility}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
+                className={`px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-1 md:gap-2 text-sm min-h-[44px] ${
                   selectedItem.visible
                     ? 'bg-gray-600 text-white hover:bg-gray-700'
                     : 'bg-green-600 text-white hover:bg-green-700'
                 }`}
               >
-                <Eye className="w-4 h-4" />
-                {selectedItem.visible ? 'Hide' : 'Show'}
+                <Eye className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden xs:inline">{selectedItem.visible ? 'Hide' : 'Show'}</span>
               </button>
             </div>
           </div>
@@ -201,31 +205,31 @@ export default function LostFoundDetails() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Item Information */}
-          <GlassCard className="p-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-              <Package className="w-5 h-5" />
+          <GlassCard className="p-4 md:p-8">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6 flex items-center gap-2">
+              <Package className="w-4 h-4 md:w-5 md:h-5" />
               Item Information
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                <p className="text-gray-900 font-medium">{selectedItem.description}</p>
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Description</label>
+                <p className="text-sm md:text-base text-gray-900 font-medium">{selectedItem.description}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Found By</label>
-                <p className="text-gray-900 font-medium">{selectedItem.foundBy}</p>
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Found By</label>
+                <p className="text-sm md:text-base text-gray-900 font-medium">{selectedItem.foundBy}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Hostel</label>
-                <p className="text-gray-900 font-medium">{selectedItem.hostel}</p>
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Hostel</label>
+                <p className="text-sm md:text-base text-gray-900 font-medium">{selectedItem.hostel}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Date Found</label>
-                <p className="text-gray-900 font-medium">
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Date Found</label>
+                <p className="text-sm md:text-base text-gray-900 font-medium">
                   {new Date(selectedItem.createdAt).toLocaleDateString('en-US', {
                     weekday: 'long',
                     year: 'numeric',
@@ -240,13 +244,13 @@ export default function LostFoundDetails() {
 
             {/* Photo */}
             {selectedItem.photo && (
-              <div className="mt-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+              <div className="mt-4 md:mt-6">
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Photo</label>
                 <div className="relative">
                   <img
                     src={selectedItem.photo}
                     alt="Lost item"
-                    className="w-full max-w-md h-48 object-cover rounded-lg"
+                    className="w-full max-w-sm md:max-w-md h-32 md:h-48 object-cover rounded-lg"
                   />
                 </div>
               </div>
@@ -254,33 +258,33 @@ export default function LostFoundDetails() {
           </GlassCard>
 
           {/* Photo Upload */}
-          <GlassCard className="p-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-              <Camera className="w-5 h-5" />
+          <GlassCard className="p-4 md:p-8">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6 flex items-center gap-2">
+              <Camera className="w-4 h-4 md:w-5 md:h-5" />
               Photo Management
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Upload New Photo</label>
-                <div className="flex items-center gap-4">
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Upload New Photo</label>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4">
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="flex-1 px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm md:text-base"
                   />
                   {photoFile && (
                     <button
                       onClick={() => handlePhotoUpload()}
-                      className="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center gap-2"
+                      className="px-4 md:px-6 py-2 md:py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center justify-center gap-1 md:gap-2 text-sm md:text-base min-h-[44px] whitespace-nowrap"
                     >
-                      <Upload className="w-4 h-4" />
+                      <Upload className="w-3 h-3 md:w-4 md:h-4" />
                       Upload
                     </button>
                   )}
                 </div>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-xs md:text-sm text-gray-500 mt-1 md:mt-2">
                   Upload a clear photo of the lost item to help with identification
                 </p>
               </div>
@@ -288,21 +292,21 @@ export default function LostFoundDetails() {
           </GlassCard>
 
           {/* Dispute History & Escalation */}
-          <GlassCard className="p-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-              <MessageSquare className="w-5 h-5" />
+          <GlassCard className="p-4 md:p-8">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6 flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 md:w-5 md:h-5" />
               Dispute History & Escalation
             </h2>
 
             {/* Existing Disputes */}
-            <div className="space-y-4 mb-6">
-              <h3 className="text-lg font-medium text-gray-900">Dispute History</h3>
+            <div className="space-y-3 md:space-y-4 mb-4 md:mb-6">
+              <h3 className="text-base md:text-lg font-medium text-gray-900">Dispute History</h3>
               {disputeHistory[selectedItem.id]?.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-2 md:space-y-3">
                   {disputeHistory[selectedItem.id].map((dispute, idx) => (
-                    <div key={idx} className="p-4 bg-gray-50 rounded-lg border">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-sm font-medium text-gray-900">
+                    <div key={idx} className="p-3 md:p-4 bg-gray-50 rounded-lg border">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                        <p className="text-xs md:text-sm font-medium text-gray-900">
                           {new Date(dispute.date).toLocaleDateString('en-US', {
                             weekday: 'short',
                             month: 'short',
@@ -311,29 +315,29 @@ export default function LostFoundDetails() {
                           })}
                         </p>
                         {dispute.escalated && (
-                          <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full font-medium">
+                          <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full font-medium self-start sm:self-center">
                             Escalated
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-700">{dispute.note}</p>
+                      <p className="text-xs md:text-sm text-gray-700">{dispute.note}</p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 italic">No disputes recorded for this item</p>
+                <p className="text-xs md:text-sm text-gray-500 italic">No disputes recorded for this item</p>
               )}
             </div>
 
             {/* Add New Dispute Note */}
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Add Dispute Note</h3>
-              <div className="space-y-4">
+            <div className="border-t border-gray-200 pt-4 md:pt-6">
+              <h3 className="text-base md:text-lg font-medium text-gray-900 mb-3 md:mb-4">Add Dispute Note</h3>
+              <div className="space-y-3 md:space-y-4">
                 <textarea
                   value={newDisputeNote}
                   onChange={(e) => setNewDisputeNote(e.target.value)}
                   placeholder="Add a note about this dispute..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                  className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none text-sm md:text-base"
                   rows={3}
                 />
                 <button
@@ -343,33 +347,33 @@ export default function LostFoundDetails() {
                       setNewDisputeNote('');
                     }
                   }}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                  className="px-4 md:px-6 py-2 md:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-1 md:gap-2 text-sm md:text-base min-h-[44px]"
                 >
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare className="w-3 h-3 md:w-4 md:h-4" />
                   Add Note
                 </button>
               </div>
             </div>
 
             {/* Escalation */}
-            <div className="border-t pt-6 mt-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-500" />
+            <div className="border-t border-gray-200 pt-4 md:pt-6 mt-4 md:mt-6">
+              <h3 className="text-base md:text-lg font-medium text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-red-500" />
                 Escalate for Review
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <textarea
                   value={escalationNote}
                   onChange={(e) => setEscalationNote(e.target.value)}
                   placeholder="Add escalation note for review..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+                  className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none text-sm md:text-base"
                   rows={3}
                 />
                 <button
                   onClick={handleEscalation}
-                  className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2"
+                  className="px-4 md:px-6 py-2 md:py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center justify-center gap-1 md:gap-2 text-sm md:text-base min-h-[44px]"
                 >
-                  <AlertTriangle className="w-4 h-4" />
+                  <AlertTriangle className="w-3 h-3 md:w-4 md:h-4" />
                   Escalate for Review
                 </button>
               </div>

@@ -5,7 +5,7 @@ export interface User {
   name: string;
   email: string;
   role: Role;
-  password: string;
+  password?: string; // Optional for OAuth users
   phone?: string;
   rollNumber?: string;
   gender?: string;
@@ -14,10 +14,13 @@ export interface User {
   profilePhoto?: string;
   qrCode?: string;
   createdAt: string;
+  profileCompleted?: boolean; // For Google OAuth users
   // Operator specific fields
   operatorId?: string;
   assignedHostel?: string;
   accountStatus?: 'active' | 'suspended' | 'pending_approval';
+  // Admin specific fields
+  adminLevel?: 'standard' | 'super';
   // New student features
   laundryPreferences?: LaundryPreferences;
   laundryPaused?: boolean;
@@ -135,6 +138,7 @@ export interface LaundryItem {
   studentName: string;
   qrCode?: string;
   bagQRCode?: string;
+  bagId: string;
   status: LaundryStatus;
   items: string[];
   specialInstructions?: string;
@@ -247,4 +251,15 @@ export interface Announcement {
   message: string;
   active: boolean;
   hostel?: string;
+}
+
+export interface LaundrySession {
+  id: string;
+  studentId: string;
+  machineId: string;
+  startTime: string;
+  endTime?: string;
+  status: 'active' | 'completed' | 'cancelled';
+  cost?: number;
+  notes?: string;
 }

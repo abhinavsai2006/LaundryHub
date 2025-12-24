@@ -119,66 +119,66 @@ export default function StudentDetails() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <button
             onClick={() => navigate('/admin/students')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4 min-h-[44px] px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
-            <ArrowLeft className="w-5 h-5" />
-            Back to Students
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">Back to Students</span>
           </button>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <GraduationCap className="w-8 h-8 text-blue-600" />
+              <GraduationCap className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
                   {showMasked ? maskName(student.name) : student.name}
                 </h1>
-                <p className="text-gray-600">Student Profile & Activity</p>
+                <p className="text-sm sm:text-base text-gray-600">Student Profile & Activity</p>
               </div>
             </div>
 
             <button
               onClick={() => setShowMasked(!showMasked)}
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border hover:bg-gray-50"
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-white rounded-lg border hover:bg-gray-50 min-h-[44px] w-full sm:w-auto transition-colors"
             >
               {showMasked ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-              {showMasked ? 'Unmask' : 'Mask'} Data
+              <span className="text-sm sm:text-base">{showMasked ? 'Unmask' : 'Mask'} Data</span>
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {/* Basic Information */}
-          <GlassCard className="p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Basic Information</h2>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-600">Full Name</span>
-                <span className="font-medium text-gray-900">
+          <GlassCard className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Basic Information</h2>
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-gray-100 gap-1">
+                <span className="text-sm sm:text-base text-gray-600">Full Name</span>
+                <span className="font-medium text-gray-900 text-sm sm:text-base break-words">
                   {showMasked ? maskName(student.name) : student.name}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-600">Email</span>
-                <span className="font-medium text-gray-900">{student.email}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-gray-100 gap-1">
+                <span className="text-sm sm:text-base text-gray-600">Email</span>
+                <span className="font-medium text-gray-900 text-sm sm:text-base break-all">{student.email}</span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-600">Registration Number</span>
-                <span className="font-medium text-gray-900">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-gray-100 gap-1">
+                <span className="text-sm sm:text-base text-gray-600">Registration Number</span>
+                <span className="font-medium text-gray-900 text-sm sm:text-base">
                   {showMasked ? maskRollNumber(student.rollNumber) : student.rollNumber || '—'}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-600">Hostel & Room</span>
-                <span className="font-medium text-gray-900">{student.hostel} {student.room}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-gray-100 gap-1">
+                <span className="text-sm sm:text-base text-gray-600">Hostel & Room</span>
+                <span className="font-medium text-gray-900 text-sm sm:text-base">{student.hostel} {student.room}</span>
               </div>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-gray-600">QR Status</span>
-                <span className={`font-medium ${getQRStatus(student) === 'Active' ? 'text-green-600' : 'text-red-600'}`}>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 gap-1">
+                <span className="text-sm sm:text-base text-gray-600">QR Status</span>
+                <span className={`font-medium text-sm sm:text-base ${getQRStatus(student) === 'Active' ? 'text-green-600' : 'text-red-600'}`}>
                   {getQRStatus(student)}
                 </span>
               </div>
@@ -186,65 +186,65 @@ export default function StudentDetails() {
           </GlassCard>
 
           {/* Laundry Frequency */}
-          <GlassCard className="p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Laundry Frequency</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <p className="text-3xl font-bold text-blue-600">{frequency.thisWeek}</p>
-                <p className="text-sm text-gray-600">This Week</p>
+          <GlassCard className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Laundry Frequency</h2>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="text-center p-3 sm:p-4 bg-blue-50 rounded-lg">
+                <p className="text-2xl sm:text-3xl font-bold text-blue-600">{frequency.thisWeek}</p>
+                <p className="text-xs sm:text-sm text-gray-600">This Week</p>
               </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <p className="text-3xl font-bold text-green-600">{frequency.thisMonth}</p>
-                <p className="text-sm text-gray-600">This Month</p>
+              <div className="text-center p-3 sm:p-4 bg-green-50 rounded-lg">
+                <p className="text-2xl sm:text-3xl font-bold text-green-600">{frequency.thisMonth}</p>
+                <p className="text-xs sm:text-sm text-gray-600">This Month</p>
               </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <p className="text-3xl font-bold text-purple-600">{frequency.averagePerWeek}</p>
-                <p className="text-sm text-gray-600">Avg/Week</p>
+              <div className="text-center p-3 sm:p-4 bg-purple-50 rounded-lg">
+                <p className="text-2xl sm:text-3xl font-bold text-purple-600">{frequency.averagePerWeek}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Avg/Week</p>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
-                <p className="text-3xl font-bold text-gray-600">{frequency.total}</p>
-                <p className="text-sm text-gray-600">Total Orders</p>
+              <div className="text-center p-3 sm:p-4 bg-gray-50 rounded-lg">
+                <p className="text-2xl sm:text-3xl font-bold text-gray-600">{frequency.total}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Total Orders</p>
               </div>
             </div>
           </GlassCard>
 
           {/* Suspicious Patterns */}
-          <GlassCard className="p-6 lg:col-span-2">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-600" />
+          <GlassCard className="p-4 sm:p-6 lg:col-span-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-3">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
                 Suspicious Patterns & Flags
               </h2>
               <button
                 onClick={() => flagSuspicious('Manual flag')}
-                className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 min-h-[44px] w-full sm:w-auto transition-colors"
               >
                 <Flag className="w-4 h-4" />
-                Flag Manually
+                <span className="text-sm sm:text-base">Flag Manually</span>
               </button>
             </div>
 
             {allFlags.length > 0 ? (
               <div className="space-y-3">
                 {allFlags.map((flag, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
+                  <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-red-50 rounded-lg border border-red-200 gap-3">
                     <div className="flex items-center gap-3">
-                      <AlertTriangle className="w-5 h-5 text-red-600" />
-                      <span className="text-red-700 font-medium">{flag}</span>
+                      <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 flex-shrink-0" />
+                      <span className="text-red-700 font-medium text-sm sm:text-base break-words">{flag}</span>
                     </div>
-                    <span className="text-xs text-red-600 bg-red-100 px-2 py-1 rounded">
+                    <span className="text-xs text-red-600 bg-red-100 px-2 py-1 rounded self-start sm:self-center whitespace-nowrap">
                       {patterns.includes(flag) ? 'Auto-detected' : 'Manual'}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <AlertTriangle className="w-8 h-8 text-green-600" />
+              <div className="text-center py-6 sm:py-8">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <AlertTriangle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
                 </div>
-                <p className="text-gray-600">No suspicious patterns detected</p>
-                <p className="text-sm text-gray-500 mt-1">Student activity appears normal</p>
+                <p className="text-sm sm:text-base text-gray-600">No suspicious patterns detected</p>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">Student activity appears normal</p>
               </div>
             )}
           </GlassCard>
