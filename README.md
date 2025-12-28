@@ -103,7 +103,7 @@ After setting up the environment and running the application, you can use these 
 
 - **Admin Account**: `admin@laundryhub.com` / `admin123`
 - **Operator Account**: `operator@laundryhub.com` / `operator123`  
-- **Student Account**: `student@laundryhub.com` / `student123`
+- **Student Account**: `alice@vitap.ac.in` / `student123`
 
 These are test accounts for demonstration purposes only.
 
