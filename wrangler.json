@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "019b360c-7118-799e-b9a1-88e8ee6e4a2b",
+  "name": "laundryhub-worker",
   "main": "./src/worker/index.ts",
   "compatibility_date": "2025-06-17",
   "compatibility_flags": ["nodejs_compat"],
@@ -10,18 +10,5 @@
   "upload_source_maps": true,
   "assets": {
     "not_found_handling": "single-page-application"
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "019b360c-7118-799e-b9a1-88e8ee6e4a2b",
-      "database_id": "019b360c-7118-799e-b9a1-88e8ee6e4a2b"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "R2_BUCKET",
-      "bucket_name": "019b360c-7118-799e-b9a1-88e8ee6e4a2b"
-    }
-  ]
+  }
 }

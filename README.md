@@ -149,6 +149,19 @@ LaundryHub/
 - Smooth easing curves
 - Performance optimized
 
+## 🔒 Security
+
+This repository does not contain any sensitive information such as API keys, Firebase project configurations, or personal data. All sensitive files (`.env`, `.firebase/`, `.firebaserc`, etc.) have been removed for security purposes.
+
+To run this project:
+
+1. Copy `.env.example` to `.env`
+2. Fill in your own API keys and configuration values
+3. Set up your own Firebase project
+4. Configure your own Cloudflare Workers (if using)
+
+**Never commit sensitive information to version control!**
+
 ## 🤝 Contributing
 
 1. Fork the repository
