@@ -246,10 +246,7 @@ export async function createDemoAccounts(createAccounts: boolean = true, forceRe
     await createMockLaundryItems(userIdMappings, forceRecreateMockData);
 
     console.log('\n🎉 Demo data creation completed successfully!');
-    console.log('You can now login with:');
-    console.log('Admin: admin@laundryhub.com / admin123');
-    console.log('Operator: operator@laundryhub.com / operator123');
-    console.log('Student: student@laundryhub.com / student123');
+    console.log('You can now login with the demo accounts (see README for credentials)');
 
   } catch (error) {
     console.error('❌ Error creating mock data:', error);

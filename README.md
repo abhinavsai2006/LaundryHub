@@ -97,6 +97,16 @@ A comprehensive, AI-powered laundry management system built with React, TypeScri
    npm run build
    ```
 
+### Demo Accounts
+
+After setting up the environment and running the application, you can use these demo accounts to explore the system:
+
+- **Admin Account**: `admin@laundryhub.com` / `admin123`
+- **Operator Account**: `operator@laundryhub.com` / `operator123`  
+- **Student Account**: `student@laundryhub.com` / `student123`
+
+These are test accounts for demonstration purposes only.
+
 ## 🔒 Security
 
 ### API Key Protection
